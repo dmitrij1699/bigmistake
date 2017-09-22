@@ -51,7 +51,7 @@ EQUALS = =
 CMAKE_SOURCE_DIR = /home/dmitrij/bigmistake
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/dmitrij/bigmistake
+CMAKE_BINARY_DIR = /home/dmitrij/bigmistake/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -116,7 +116,7 @@ rebuild_cache/fast: rebuild_cache
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
-	/usr/bin/cmake-gui -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/usr/local/bin/ccmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -126,14 +126,14 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/dmitrij/bigmistake/CMakeFiles /home/dmitrij/bigmistake/CMakeFiles/progress.marks
-	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/dmitrij/bigmistake/CMakeFiles 0
+	cd /home/dmitrij/bigmistake/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/dmitrij/bigmistake/build/CMakeFiles /home/dmitrij/bigmistake/build/source/libs/glfw-3.2.1/CMakeFiles/progress.marks
+	cd /home/dmitrij/bigmistake/build && $(MAKE) -f CMakeFiles/Makefile2 source/libs/glfw-3.2.1/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/dmitrij/bigmistake/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	$(MAKE) -f CMakeFiles/Makefile2 clean
+	cd /home/dmitrij/bigmistake/build && $(MAKE) -f CMakeFiles/Makefile2 source/libs/glfw-3.2.1/clean
 .PHONY : clean
 
 # The main clean target
@@ -143,84 +143,33 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	$(MAKE) -f CMakeFiles/Makefile2 preinstall
+	cd /home/dmitrij/bigmistake/build && $(MAKE) -f CMakeFiles/Makefile2 source/libs/glfw-3.2.1/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	$(MAKE) -f CMakeFiles/Makefile2 preinstall
+	cd /home/dmitrij/bigmistake/build && $(MAKE) -f CMakeFiles/Makefile2 source/libs/glfw-3.2.1/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	$(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/dmitrij/bigmistake/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
-#=============================================================================
-# Target rules for targets named bigmistake
+# Convenience name for target.
+source/libs/glfw-3.2.1/CMakeFiles/uninstall.dir/rule:
+	cd /home/dmitrij/bigmistake/build && $(MAKE) -f CMakeFiles/Makefile2 source/libs/glfw-3.2.1/CMakeFiles/uninstall.dir/rule
+.PHONY : source/libs/glfw-3.2.1/CMakeFiles/uninstall.dir/rule
 
-# Build rule for target.
-bigmistake: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 bigmistake
-.PHONY : bigmistake
+# Convenience name for target.
+uninstall: source/libs/glfw-3.2.1/CMakeFiles/uninstall.dir/rule
 
-# fast build rule for target.
-bigmistake/fast:
-	$(MAKE) -f CMakeFiles/bigmistake.dir/build.make CMakeFiles/bigmistake.dir/build
-.PHONY : bigmistake/fast
-
-#=============================================================================
-# Target rules for targets named uninstall
-
-# Build rule for target.
-uninstall: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 uninstall
 .PHONY : uninstall
 
 # fast build rule for target.
 uninstall/fast:
-	$(MAKE) -f source/libs/glfw-3.2.1/CMakeFiles/uninstall.dir/build.make source/libs/glfw-3.2.1/CMakeFiles/uninstall.dir/build
+	cd /home/dmitrij/bigmistake/build && $(MAKE) -f source/libs/glfw-3.2.1/CMakeFiles/uninstall.dir/build.make source/libs/glfw-3.2.1/CMakeFiles/uninstall.dir/build
 .PHONY : uninstall/fast
-
-#=============================================================================
-# Target rules for targets named glfw
-
-# Build rule for target.
-glfw: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 glfw
-.PHONY : glfw
-
-# fast build rule for target.
-glfw/fast:
-	$(MAKE) -f source/libs/glfw-3.2.1/src/CMakeFiles/glfw.dir/build.make source/libs/glfw-3.2.1/src/CMakeFiles/glfw.dir/build
-.PHONY : glfw/fast
-
-source/main.o: source/main.cpp.o
-
-.PHONY : source/main.o
-
-# target to build an object file
-source/main.cpp.o:
-	$(MAKE) -f CMakeFiles/bigmistake.dir/build.make CMakeFiles/bigmistake.dir/source/main.cpp.o
-.PHONY : source/main.cpp.o
-
-source/main.i: source/main.cpp.i
-
-.PHONY : source/main.i
-
-# target to preprocess a source file
-source/main.cpp.i:
-	$(MAKE) -f CMakeFiles/bigmistake.dir/build.make CMakeFiles/bigmistake.dir/source/main.cpp.i
-.PHONY : source/main.cpp.i
-
-source/main.s: source/main.cpp.s
-
-.PHONY : source/main.s
-
-# target to generate assembly for a file
-source/main.cpp.s:
-	$(MAKE) -f CMakeFiles/bigmistake.dir/build.make CMakeFiles/bigmistake.dir/source/main.cpp.s
-.PHONY : source/main.cpp.s
 
 # Help Target
 help:
@@ -234,12 +183,7 @@ help:
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... bigmistake"
 	@echo "... uninstall"
-	@echo "... glfw"
-	@echo "... source/main.o"
-	@echo "... source/main.i"
-	@echo "... source/main.s"
 .PHONY : help
 
 
@@ -251,6 +195,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	$(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/dmitrij/bigmistake/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 
