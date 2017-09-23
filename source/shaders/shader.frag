@@ -4,10 +4,22 @@ in vec2 TexCoord;
 out vec4 color;
 
 
-uniform sampler2D ourTexture1;
-uniform sampler2D ourTexture2;
+uniform sampler2D dirt;
+uniform sampler2D grass;
+
+uniform int typeT;
 
 void main()
 {
-	color = texture(ourTexture1, TexCoord);
+	switch(typeT) {
+		case 1:{
+			color = texture(dirt, TexCoord);
+			break;
+		}
+		default:{
+			color = texture(grass, TexCoord);
+			break;
+		}
+	}
+	
 }

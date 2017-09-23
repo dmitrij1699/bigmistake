@@ -15,26 +15,16 @@ GLuint buffersIn() {
     };
     float vertices[] = {
         // Позиция              
-        -1.0f,  -1.0f, 0.0f,      
-         0.0f,  -1.0f, 0.0f,      
-         0.0f,   0.0f, 0.0f,      
-        -1.0f,   0.0f, 0.0f,      
-         1.0f,  -1.0f, 0.0f,      
-         1.0f,   0.0f, 0.0f,
-         1.0f,   1.0f, 0.0f,
-         0.1f,   1.0f, 0.0f   
+         -0.08f,   -0.08f, 0.0f,      
+         0.08f,   -0.08f, 0.0f,      
+         0.08f,   0.08f, 0.0f,      
+         -0.08f,   0.08f, 0.0f
 
     }; 
-    /*for( int i=0; i<=50; i++) {
-        vertices[i*3]=
-    }*/
+
     GLuint indices[] = {  // Note that we start from 0!
         0, 1, 2, // First Triangle
-        0, 2, 3,  // Second Triangle
-        1, 4, 5,
-        1, 5, 2,
-        2, 6, 5,
-        2, 7, 6
+        0, 2, 3  // Second Triangle
     };
     GLuint VBO[2],VAO, EBO;
     glGenVertexArrays(1, &VAO);

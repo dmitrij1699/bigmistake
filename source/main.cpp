@@ -12,17 +12,45 @@
 #include "libs/glm/gtc/type_ptr.hpp"
 
 using namespace glm;
+using namespace std;
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 GLuint buffersIn();
 GLuint Ltext(const char str[]); 
 
-const GLuint WIDTH = 800, HEIGHT = 600;
-const int W=75 , H=50; //формат поля (W x H)
-uint fields[75][50];
+const GLuint WIDTH = 1280, HEIGHT = 720;
+const int F_X=25;
+const int F_Y=25;
+uint fields[F_X][F_Y];
 GLuint VAO;
 int main()
 {
+
+    float in_x=(float) 2/F_X;
+    float in_y=(float) 2/F_Y;
+    cout<< "in_x= "<<in_x <<endl;
+    float position_x[F_X];
+    float position_y[F_Y];
+    position_x[0]=-1;
+    position_y[0]=-1;
+    for (int i=1; i<F_X; i+=1){
+        position_x[i]=position_x[i-1]+in_x;
+        cout<< "position=" << position_x[i]<< endl;
+        
+    }
+    for (int i=1; i<F_Y; i+=1){
+        position_y[i]=position_y[i-1]+in_y;
+    }
+
+    /*float position[F_X][F_Y];
+    position[0][0]=0;
+    for(int x=0; x<F_X; x+=1){
+        position[x][0]=0;
+        for(int y=1; y<F_Y; y+=1){
+            position[x][y]=position[x][y-1]+in_y;
+        }
+        position[x-1]
+    }*/
 
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -39,22 +67,9 @@ int main()
 
     Shader ourShader("../source/shaders/shader.vs", "../source/shaders/shader.frag");
 
+
+
     VAO= buffersIn();
-
-    /*GLfloat vertices[] = {
-        // Positions          // Colors           // Texture Coords
-         0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   0.5f, 0.5f, // Top Right
-         0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   0.5f, 0.0f, // Bottom Right
-        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // Bottom Left
-        -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 0.5f  // Top Left 
-    }; */ 
-    
-
-  
-    
-
-
-
 
     GLuint texture1;
     GLuint texture2;
@@ -75,21 +90,44 @@ int main()
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture1);
-        glUniform1i(glGetUniformLocation(ourShader.Program, "ourTexture1"), 0);
+        glUniform1i(glGetUniformLocation(ourShader.Program, "dirt"), 0);
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture2);
-        glUniform1i(glGetUniformLocation(ourShader.Program, "ourTexture2"), 1);  
+        glUniform1i(glGetUniformLocation(ourShader.Program, "grass"), 1);  
         
         GLint modelLoc = glGetUniformLocation(ourShader.Program, "model");
-
+        GLint typeTLoc = glGetUniformLocation(ourShader.Program, "typeT");
         glBindVertexArray(VAO);
 
-        mat4 model;
-        model = translate(model, vec3(0.5f, 0.5f, 0.0f));
-        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model));
+        fields[0][2]=1;
+        fields[0][1]=1;
+        fields[0][3]=1;
+        fields[0][4]=1;
+        int g=0;
+        for (int x=0; x<F_X; x+=1){
+            for(int y=0; y<F_Y; y+=1){
+                if (x<=6) fields[x][y]=1;
+                switch( fields[x][y] ){  
+                    case 1: {
+                        mat4 model;
+                        model = translate(model, vec3(position_x[x], position_y[y], 0));
+                        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model));
+                        glUniform1i(typeTLoc, fields[x][y] );
+                        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+                    }   
+                    default: { 
+                        mat4 model;
+                        model = translate(model, vec3(position_x[x], position_y[y], 0));
+                        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model));
+                        glUniform1i(typeTLoc,  fields[x][y] );
+                        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+                        }
+                    }
+            }
+        }
 
+        
 
-        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
 
         glfwSwapBuffers(window);
