@@ -6,11 +6,21 @@
 #include "header/Shader.h"
 #include <vector>
 
+#include "libs/glm/vector_relational.hpp"
+#include "libs/glm/mat4x4.hpp" 
+#include "libs/glm/gtc/matrix_transform.hpp" 
+#include "libs/glm/gtc/type_ptr.hpp"
+
+using namespace glm;
+
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
+GLuint buffersIn();
+GLuint Ltext(const char str[]); 
 
 const GLuint WIDTH = 800, HEIGHT = 600;
 const int W=75 , H=50; //формат поля (W x H)
-
+uint fields[75][50];
+GLuint VAO;
 int main()
 {
 
@@ -29,7 +39,7 @@ int main()
 
     Shader ourShader("../source/shaders/shader.vs", "../source/shaders/shader.frag");
 
- 
+    VAO= buffersIn();
 
     /*GLfloat vertices[] = {
         // Positions          // Colors           // Texture Coords
@@ -38,103 +48,19 @@ int main()
         -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // Bottom Left
         -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 0.5f  // Top Left 
     }; */ 
-    GLfloat textures[] = {
-        0.0f, 0.0f, // 0
-        1.0f, 0.0f, // 1
-        1.0f, 1.0f, // 2
-        0.0f, 1.0f, // 3
-    };
-    float vertices[] = {
-        // Позиция              
-        -1.0f,  -1.0f, 0.0f,      
-         0.0f,  -1.0f, 0.0f,      
-         0.0f,   0.0f, 0.0f,      
-        -1.0f,   0.0f, 0.0f,      
-         1.0f,  -1.0f, 0.0f,      
-         1.0f,   0.0f, 0.0f,
-         1.0f,   1.0f, 0.0f,
-         0.1f,   1.0f, 0.0f   
-
-    }; 
-    /*for( int i=0; i<=50; i++) {
-        vertices[i*3]=
-    }*/
-    GLuint indices[] = {  // Note that we start from 0!
-        0, 1, 2, // First Triangle
-        0, 2, 3,  // Second Triangle
-        1, 4, 5,
-        1, 5, 2,
-        2, 6, 5,
-        2, 7, 6
-    };
-    GLuint VBO[2], VAO, EBO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(2, VBO);
-    glGenBuffers(1, &EBO);
-    GLuint position= VBO[0];
-    GLuint text= VBO[1];
-
-    glBindBuffer(GL_ARRAY_BUFFER, position);
-    glBufferData(GL_ARRAY_BUFFER,sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ARRAY_BUFFER, text);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(textures), textures, GL_STATIC_DRAW);
-
-
-    glBindVertexArray(VAO);
     
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
-
-    glBindBuffer(GL_ARRAY_BUFFER, position);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-
-    glBindBuffer(GL_ARRAY_BUFFER, text);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, NULL);
-
 
   
     
 
-    glBindVertexArray(0); // Unbind VAO
+
 
 
     GLuint texture1;
     GLuint texture2;
 
-    glGenTextures(1, &texture1);
-    glBindTexture(GL_TEXTURE_2D, texture1); 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    int width, height;
-    unsigned char* image = SOIL_load_image("../Textures/dirt.png", &width, &height, 0, SOIL_LOAD_RGB);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
-    glGenerateMipmap(GL_TEXTURE_2D);
-    SOIL_free_image_data(image);
-    glBindTexture(GL_TEXTURE_2D, 0); 
-    glGenTextures(1, &texture2);
-    glBindTexture(GL_TEXTURE_2D, texture2);
- 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
- 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
- 
-    image = SOIL_load_image("../Textures/grass.png", &width, &height, 0, SOIL_LOAD_RGB);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
-    glGenerateMipmap(GL_TEXTURE_2D);
-    SOIL_free_image_data(image);
-    glBindTexture(GL_TEXTURE_2D, 0);
-
+    texture1= Ltext("../Textures/dirt.png");
+    texture2= Ltext("../Textures/grass.png");
 
     while (!glfwWindowShouldClose(window))
     {
@@ -154,8 +80,15 @@ int main()
         glBindTexture(GL_TEXTURE_2D, texture2);
         glUniform1i(glGetUniformLocation(ourShader.Program, "ourTexture2"), 1);  
         
+        GLint modelLoc = glGetUniformLocation(ourShader.Program, "model");
 
         glBindVertexArray(VAO);
+
+        mat4 model;
+        model = translate(model, vec3(0.5f, 0.5f, 0.0f));
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model));
+
+
         glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
 
@@ -163,9 +96,6 @@ int main()
     }
 
     glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(2, VBO);
-    glDeleteBuffers(1, &EBO);
-
     glfwTerminate();
     return 0;
 }
