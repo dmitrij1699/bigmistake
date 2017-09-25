@@ -19,8 +19,8 @@ GLuint buffersIn();
 GLuint Ltext(const char str[]); 
 
 const GLuint WIDTH = 1280, HEIGHT = 720;
-const int F_X=25;
-const int F_Y=25;
+const int F_X=5;
+const int F_Y=5;
 uint fields[F_X][F_Y];
 GLuint VAO;
 int main()
@@ -33,15 +33,18 @@ int main()
     float position_y[F_Y];
     position_x[0]=-1;
     position_y[0]=-1;
-    for (int i=1; i<F_X; i+=1){
+    for (int i=1; i<=F_X; i++){
         position_x[i]=position_x[i-1]+in_x;
-        cout<< "position=" << position_x[i]<< endl;
+        
         
     }
-    for (int i=1; i<F_Y; i+=1){
+    for (int i=1; i<=F_Y; i++){
         position_y[i]=position_y[i-1]+in_y;
     }
-
+    for (int i=0; i<=F_X; i++){
+        cout<< "position_x= " << position_x[i];
+        cout<< ";  position_y=" << position_y[i]<< endl;
+    }
     /*float position[F_X][F_Y];
     position[0][0]=0;
     for(int x=0; x<F_X; x+=1){
@@ -66,7 +69,8 @@ int main()
 
 
     Shader ourShader("../source/shaders/shader.vs", "../source/shaders/shader.frag");
-
+    cout<< "ошибка??"<< endl;
+    Shader lineShader("../source/shaders/line.vs", "../source/shaders/line.frag");
 
 
     VAO= buffersIn();
@@ -77,15 +81,48 @@ int main()
     texture1= Ltext("../Textures/dirt.png");
     texture2= Ltext("../Textures/grass.png");
 
+
+    GLfloat verticesL[F_X*6-6];
+    for(int i=0; i<F_X; i++) {
+        verticesL[i*6]=position_x[i+1]; //x
+        verticesL[1+i*6]=-1.0f; //y
+        verticesL[2+i*6]=0.0f; //z
+        verticesL[3+i*6]=position_x[i+1];
+        verticesL[4+i*6]=1.0;
+        verticesL[5+i*6]=0.0f;
+
+
+        cout<<i << "Линия. Начало: x="<< verticesL[i] <<"; y=" <<verticesL[1+i]<< ". Конец: x="<<verticesL[3+i]<< "; y="<<verticesL[4+i] << endl;
+    }
+    GLfloat LV[]={
+        0.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 0.0f,
+        0.0f, 1.0f, 0.0f
+    };
+    GLuint LVAO, BverticesL;
+    glGenVertexArrays(1, &LVAO);
+    glGenBuffers(1, &BverticesL);
+    glBindVertexArray(LVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, BverticesL);
+    glBufferData(GL_ARRAY_BUFFER,sizeof(verticesL), verticesL, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE,  3 * sizeof(GLfloat), NULL);
+    glEnableVertexAttribArray(0);
+    glBindVertexArray(0);
+
+
+    
+
     while (!glfwWindowShouldClose(window))
     {
         
         glfwPollEvents();
 
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        ourShader.Use();     
+        
+        ourShader.Use();   
 
 
         glActiveTexture(GL_TEXTURE0);
@@ -103,7 +140,6 @@ int main()
         fields[0][1]=1;
         fields[0][3]=1;
         fields[0][4]=1;
-        int g=0;
         for (int x=0; x<F_X; x+=1){
             for(int y=0; y<F_Y; y+=1){
                 if (x<=6) fields[x][y]=1;
@@ -124,11 +160,20 @@ int main()
                         }
                     }
             }
-        }
+        } 
 
+        glBindVertexArray(0); 
+
+        //cout<<"мы тут" <<endl;
+        lineShader.Use();
+        glBindVertexArray(LVAO);
+
+        //glDrawArrays(GL_LINES, 0​, F_X*3-3​);
         
-
+        glDrawArrays(GL_LINES,0,40);
+        //glDrawElements(GL_LINES,F_X, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
+
 
         glfwSwapBuffers(window);
     }

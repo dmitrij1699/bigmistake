@@ -7,13 +7,15 @@
 
 using namespace std;
 
-class objects() {
+class objects {
 private:
     vector<float> vertices;
     vector<float> indices;
-
+    int F_X, F_Y;
+    GLuint VAO;
+    const float thickness=0.01; //толщина линии между клетками
 public:
-    objects
+    objects(int, int);
 
 };
 
