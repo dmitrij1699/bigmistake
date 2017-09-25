@@ -3,13 +3,16 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <iostream>
 #include "header/objects.h"
+#include "libs/SOIL.h"
+#include "header/Shader.h"
 
 using namespace std;
 
 objects::objects(int F_X,int F_Y){
     cout<< "Высчитывание координат объектов..."<< endl;
-    float inc_x, inc_y, line[(F_X+F_Y-2)*8], obj_x[F_X], obj_y[F_Y], square[F_X*8][F_Y*8] ;
+    float  line[(F_X+F_Y-2)*8], obj_x[F_X], obj_y[F_Y], square[F_X*8][F_Y*8] ;
     inc_x= (float) (2-thickness*(F_X-1) )/F_X;
     inc_y= (float) (2-thickness*(F_Y-1) )/F_Y;
     obj_x[0]=-1;
@@ -42,21 +45,39 @@ objects::objects(int F_X,int F_Y){
         line[6+i*8]=1.0f;
         g++;
     }
-
-    for(int x=0; x<F_X*4; x++){
-        for(int y=0; y<F_Y*4; y++){
-            
-        }
-    }
-
+    c_x=obj_x[];
+    c_y=obj_y[];
     cout<<"Заполнение буферов"<< endl;
 
-    GLuint VBO[2], EBO;
+    buff(line[]);
+    cout<<"VAO заполнен"<< endl;
+
+
+
+}
+
+void objects::buff(float *line){
+    GLfloat textures[] = {
+        0.0f, 0.0f, // 0
+        1.0f, 0.0f, // 1
+        1.0f, 1.0f, // 2
+        0.0f, 1.0f, // 3
+    };
+    float vertices[] = {
+        // Позиция              
+         -1.0f,   -1.0f, 0.0f,      
+         1.0f,   -1.0f, 0.0f,      
+         1.0f,   1.0f, 0.0f,      
+         -1.0f,   1.0f, 0.0f
+
+    }; 
+
+    GLuint VBO[2];
     glGenVertexArrays(1, &VAO);
-    glGenBuffers(2, VBO);
-    glGenBuffers(1, &EBO);
+    glGenBuffers(3, VBO);
     GLuint position= VBO[0];
     GLuint text= VBO[1];
+    GLuint lineB= VBO[2];
 
     glBindBuffer(GL_ARRAY_BUFFER, position);
     glBufferData(GL_ARRAY_BUFFER,sizeof(vertices), vertices, GL_STATIC_DRAW);
@@ -64,35 +85,46 @@ objects::objects(int F_X,int F_Y){
     glBindBuffer(GL_ARRAY_BUFFER, text);
     glBufferData(GL_ARRAY_BUFFER, sizeof(textures), textures, GL_STATIC_DRAW);
 
+    glBindBuffer(GL_ARRAY_BUFFER, lineB);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(line), line, GL_STATIC_DRAW);
+
 
     glBindVertexArray(VAO);
     
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
+    glEnableVertexAttribArray(2);
 
     glBindBuffer(GL_ARRAY_BUFFER, position);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, NULL);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 
     glBindBuffer(GL_ARRAY_BUFFER, text);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, NULL);
 
+    glBindBuffer(GL_ARRAY_BUFFER, lineB);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, NULL);
+
     glBindVertexArray(0); // Unbind VAO
-    glDeleteBuffers(2, VBO);
-    glDeleteBuffers(1, &EBO);
-
-
+    glDeleteBuffers(3, VBO);
 }
 
 
+float objects::getSize_x(){
+    return (inc_x+thickness);
+}
 
+float objects::getSize_y(){
+    return (inc_y+thickness);
+}
 
-
-
-
+float objects::getInc_x(){
+    return (inc_x);
+}
+float objects::getInc_y(){
+    return (inc_y);
+}
 
 
 

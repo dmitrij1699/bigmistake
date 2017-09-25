@@ -14,7 +14,7 @@ public:
     engine(GLuint, GLuint, int, int, uint *);
     void drawCircle();
     void callback();
-    void draw();
+    //void draw();
 
 };
 

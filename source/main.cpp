@@ -5,6 +5,7 @@
 #include "libs/SOIL.h"
 #include "header/Shader.h"
 #include <vector>
+#include "header/engine.cpp"
 
 #include "libs/glm/vector_relational.hpp"
 #include "libs/glm/mat4x4.hpp" 
@@ -26,7 +27,7 @@ GLuint VAO;
 int main()
 {
 
-    float in_x=(float) 2/F_X;
+   /* float in_x=(float) 2/F_X;
     float in_y=(float) 2/F_Y;
     cout<< "in_x= "<<in_x <<endl;
     float position_x[F_X];
@@ -53,7 +54,7 @@ int main()
             position[x][y]=position[x][y-1]+in_y;
         }
         position[x-1]
-    }*/
+    }
 
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -181,11 +182,18 @@ int main()
     glDeleteVertexArrays(1, &VAO);
     glfwTerminate();
     return 0;
-}
+} 
 
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GL_TRUE);
+} */
+for (int i=0)
+    fields[F_X][F_Y];
+    engine start(WIDTH, HEIGHT, F_X, F_Y, fields[][]);
+    
+
+    return 0;
 }

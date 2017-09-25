@@ -5,6 +5,8 @@
 #include <GLFW/glfw3.h>
 #include "header/engine.h"
 #include "header/objects.h"
+#include "header/Shader.h"
+#include "libs/SOIL.h"
 
 using namespace std;
 
@@ -15,30 +17,78 @@ engine::engine(GLuint WIDTH,GLuint HEIGHT, int F_X, int F_Y, uint *fields) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-    window = glfwCreateWindow(WIDTH, HEIGHT, "LearnOpenGL", nullptr, nullptr);
+    window = glfwCreateWindow(WIDTH, HEIGHT, "bigmistake", nullptr, nullptr);
     glfwMakeContextCurrent(window);
     glfwSetKeyCallback(window, engine::callback);
     glewExperimental = GL_TRUE;
     glewInit();
     glViewport(0, 0, WIDTH, HEIGHT);
     cout << "Инициализация прошла успешно" << endl;
+
+    cout<< "Загрузка шейдера" <<endl;
+    Shader ourShader("../source/shaders/object.vs", "../source/shaders/object.frag");
+    cout<< "Шейдер готов" <<endl;
+
+    cout<< "Загрузка текстур" <<endl;
+    texture1= Ltext("../Textures/dirt.png");
+    texture2= Ltext("../Textures/grass.png");
+    cout<< "Текстуры загружены" <<endl;
+    drawCircle();
+
 }
 
 void engine::drawCircle(){
     cout << "Старт отрисовки..." << endl;
     objects OBJ(F_X, F_Y);
+    vec3 size(OBJ.getSize_x(), OBJ.getSize_y(), 0.0f);
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        ourShader.Use();
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texture1);
+        glUniform1i(glGetUniformLocation(ourShader.Program, "dirt"), 0);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, texture2);
+        glUniform1i(glGetUniformLocation(ourShader.Program, "grass"), 1);  
+
+        GLint typeTLoc = glGetUniformLocation(ourShader.Program, "typeT");
+        GLint incLoc = glGetUniformLocation(ourShader.Program, "inc");
+        GLint sizeLoc = glGetUniformLocation(ourShader.Program, "size");
+
+        vec3 inc(OBJ.getInc_x(),0.0f, 0.0f);
+        for (int y=0; y<F_Y; y++){
+            for(int x=0; x<F_X; x++){
+                switch( fields[x][y] ){  
+                    case 1: {
+                        glUniform1i(typeTLoc, fields[x][y] );
+                        glUniform3fv(incLoc,);
+                        glUniform3fv(sizeLoc,size);
+                        glDrawArrays(GL_QUADS, 0, 4);
+                    }   
+                    default: { 
+                        glUniform3fv(incLoc,);
+                        glUniform3fv(sizeLoc,size);
+                        glUniform1i(typeTLoc,  fields[x][y] );
+                        glDrawArrays(GL_QUADS, 0, 4);
+                        }
+                    }
+                inc= inc+ vec3(OBJ.getInc_x(), 0.0f, 0.0f);
+            }
+            inc= inc+ vec3(0.0f, OBJ.getInc_y(), 0.0f);
+        } 
 
         glfwSwapBuffers(window);
     }
 }
 
 
-
+void engine::callback(GLFWwindow* window, int key, int scancode, int action, int mode){
+        if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+            glfwSetWindowShouldClose(window, GL_TRUE);
+}
 
 
 
