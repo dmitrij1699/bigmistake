@@ -4,9 +4,17 @@ cmake_minimum_required (VERSION 3.8)
 
 project (bigmistake)
 
-set(SOURCE "source/main.cpp" "source/buff.cpp" "source/Ltext.cpp")
+#/set(SOURCE "source/main.cpp" "source/buff.cpp" "source/Ltext.cpp")
+
+set(SOURCE "source/main.cpp" 
+    "source/buff.cpp" 
+    "source/Ltext.cpp" 
+    "source/engine.cpp" 
+    "source/objects.cpp" )
 
 add_executable(bigmistake ${SOURCE})
+
+set(CMAKE_BUILD_TYPE Debug)
 
 add_definitions(-std=c++11 -Wall -DGLEW_STATIC)
 

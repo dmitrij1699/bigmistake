@@ -10,14 +10,16 @@ uniform vec3 size;
 
 out vec2 TexCoord;
 
+printf("мы тут");
 void main()
 {
     switch(typeT) {
-        case 0:{
+        case 3:{
             gl_Position =vec4( line,0.0f, 1.0f);
             break;
         }
         default:{
+            printf("мы тут");
             gl_Position =vec4( (position*size+inc), 1.0f);
 	        TexCoord = vec2(texCoord.x, 1.0 - texCoord.y);
             break;

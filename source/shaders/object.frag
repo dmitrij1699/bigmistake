@@ -12,8 +12,8 @@ uniform int typeT;
 void main()
 {
 	switch(typeT) {
-        case 0:{
-            color=(0.0f, 0.0f, 0.0f, 1.0f);
+        case 3:{
+            color=vec4(0.0f, 0.0f, 0.0f, 1.0f);
             break;
         }
 		case 1:{

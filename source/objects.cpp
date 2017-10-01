@@ -10,20 +10,31 @@
 
 using namespace std;
 
-objects::objects(int F_X,int F_Y){
+objects::objects(int F_X,int F_Y): F_X(F_X), F_Y(F_Y) {
     cout<< "Высчитывание координат объектов..."<< endl;
-    float  line[(F_X+F_Y-2)*8], obj_x[F_X], obj_y[F_Y], square[F_X*8][F_Y*8] ;
+    cout << F_X << " " << F_Y <<endl;
+    int si=(F_X+F_Y-2)*8;
+    cout << si <<endl;
+    line.resize( si );
+    cout << F_X <<endl;
+    obj_x.resize(F_X);
+    cout << F_Y <<endl;
+    obj_y.resize(F_Y);
+  //square[F_X*8][F_Y*8] ;
+    cout << "??" <<endl;
     inc_x= (float) (2-thickness*(F_X-1) )/F_X;
     inc_y= (float) (2-thickness*(F_Y-1) )/F_Y;
     obj_x[0]=-1;
     obj_y[0]=-1;
     for (int x=1; x<F_X; x++){
         obj_x[x]=obj_x[x-1]+inc_x+thickness;
+        cout<< "x= " <<x <<endl;
     }
     for (int y=1; y<F_Y; y++){
         obj_y[y]=obj_y[y-1]+inc_y+thickness;
     }
     for(int i=0; i<F_X-1; i++){
+        cout<< i<< endl;
         line[i*8]=obj_x[i+1];
         line[1+i*8]=-1.0f;     //1
         line[2+i*8]=obj_x[i+1]-thickness; 
@@ -45,11 +56,11 @@ objects::objects(int F_X,int F_Y){
         line[6+i*8]=1.0f;
         g++;
     }
-    c_x=obj_x[];
-    c_y=obj_y[];
+    //c_x=obj_x;
+    //c_y=obj_y;
     cout<<"Заполнение буферов"<< endl;
-
-    buff(line[]);
+    float *lineM=&line[0];
+    buff(lineM);
     cout<<"VAO заполнен"<< endl;
 
 

@@ -5,7 +5,8 @@
 #include "libs/SOIL.h"
 #include "header/Shader.h"
 #include <vector>
-#include "header/engine.cpp"
+#include <cstring> 
+#include "header/engine.h"
 
 #include "libs/glm/vector_relational.hpp"
 #include "libs/glm/mat4x4.hpp" 
@@ -18,16 +19,34 @@ using namespace std;
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 GLuint buffersIn();
 GLuint Ltext(const char str[]); 
-
-const GLuint WIDTH = 1280, HEIGHT = 720;
 const int F_X=5;
 const int F_Y=5;
-uint fields[F_X][F_Y];
+
+
+/*int mfields[F_X][F_Y]={
+    //  1  2  3  4  5
+        0, 1, 0, 1, 0, //1
+        0, 1, 1, 1, 1, //2
+        1, 1, 1, 1, 1, //3
+        1, 1, 1, 1, 1, //4
+        1, 1, 1, 1, 1  //5
+    };*/
+
+const GLuint WIDTH = 1280, HEIGHT = 720;
+vector<vector<int> > fields ={
+    //  1  2  3  4  5
+        {0, 1, 0, 1, 0}, //1
+        {0, 1, 1, 1, 1}, //2
+        {1, 1, 1, 1, 1}, //3
+        {1, 1, 1, 1, 1}, //4
+        {1, 1, 1, 1, 1}  //5
+    };
+
 GLuint VAO;
 int main()
 {
 
-   /* float in_x=(float) 2/F_X;
+    /*float in_x=(float) 2/F_X;
     float in_y=(float) 2/F_Y;
     cout<< "in_x= "<<in_x <<endl;
     float position_x[F_X];
@@ -46,7 +65,7 @@ int main()
         cout<< "position_x= " << position_x[i];
         cout<< ";  position_y=" << position_y[i]<< endl;
     }
-    /*float position[F_X][F_Y];
+    float position[F_X][F_Y];
     position[0][0]=0;
     for(int x=0; x<F_X; x+=1){
         position[x][0]=0;
@@ -190,9 +209,10 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GL_TRUE);
 } */
-for (int i=0)
-    fields[F_X][F_Y];
-    engine start(WIDTH, HEIGHT, F_X, F_Y, fields[][]);
+
+    //uint  **ek= *fields[F_Y] ; 
+    //cout << fields[0][0] <<endl;
+    engine start(WIDTH, HEIGHT, F_X, F_Y,  fields);
     
 
     return 0;
