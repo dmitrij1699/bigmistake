@@ -13,6 +13,8 @@ class connect {
 private:
     int sock;
     
+public:
+    connect();
 };
 
 #endif
