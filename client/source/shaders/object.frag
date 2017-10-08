@@ -21,7 +21,7 @@ void main()
 			break;
 		}
 		default:{
-			color = texture(grass, TexCoord);
+			color=texture(grass, TexCoord);
 			break;
 		}
 	}

@@ -14,7 +14,7 @@ set(SOURCE "source/main.cpp"
 
 add_executable(bigmistake ${SOURCE})
 
-set(CMAKE_BUILD_TYPE Debug)
+#set(CMAKE_BUILD_TYPE Debug)
 
 add_definitions(-std=c++11 -Wall -DGLEW_STATIC)
 
@@ -32,7 +32,7 @@ add_subdirectory("source/libs/glfw-3.2.1")
 
  find_package(GLEW REQUIRED)
 if(GLEW_FOUND)
-    message( "glew was found")
+    message(${GLEW_INCLUDE_DIRS})
 endif()
     include_directories(${GLEW_INCLUDE_DIRS})
     link_libraries(${GLEW_LIBRARIES})
