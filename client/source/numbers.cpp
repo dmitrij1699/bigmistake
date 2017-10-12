@@ -44,9 +44,9 @@ GLuint numbers::VAO_num(int x){
         case 0:
             indices ={
                 0, 1,
-                1, 2,
-                2, 3,
-                3, 0
+                1, 5,
+                5, 4,
+                4, 0
             };
             break;
         case 1:

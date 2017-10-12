@@ -2,7 +2,6 @@
 #define ENGINE_CPP
 
 #include <GL/glew.h>
-#include <GL/glut.h>
 #include <GLFW/glfw3.h>
 #include "header/engine.h"
 #include "header/objects.h"
