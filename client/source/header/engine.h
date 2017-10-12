@@ -20,8 +20,9 @@ private:
     void drawCircle();
     void drawFields(objects, GLint, GLint);
     void drawLines(objects);
+    void drawNumber(int);
     //uint *fields;
-    GLuint SHprog,LineSH;
+    GLuint SHprog,LineSH, NumberSH;
     GLFWwindow* window;
     GLuint texture1, texture2;
     GLuint WIDTH, HEIGHT;

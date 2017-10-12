@@ -11,6 +11,7 @@
 #include <vector>
 #include <iostream>
 #include "header/buff.h"
+#include "header/numbers.h"
 
 #include "libs/glm/gtc/type_ptr.hpp"
 
@@ -63,6 +64,11 @@ void engine::shaderInic(){
     cout<<"Загрузка шейдерной програмы..."<<endl;
     Shader lineShader("../source/shaders/line.vs", "../source/shaders/line.frag");
     LineSH= lineShader.Program;
+    cout<<"Загрузка шейдерной програмы Успешно!"<<endl;
+    chErr();
+    cout<<"Загрузка шейдерной програмы..."<<endl;
+    Shader numberShader("../source/shaders/number.vs", "../source/shaders/number.frag");
+    NumberSH= numberShader.Program;
     cout<<"Загрузка шейдерной програмы Успешно!"<<endl;
     chErr();
 }
@@ -123,6 +129,35 @@ void engine::drawLines(objects OBJ){
     glBindVertexArray(0);
 }
 
+void engine::drawNumber(int x){
+    glUseProgram(NumberSH);
+    numbers num;
+    glBindVertexArray(num.VAO_num(x));
+    int calc=0;
+    switch(x){
+        case 4:
+        case 7: 
+        case 1:
+            calc=3;
+            break;
+        
+        case 3:
+        case 0:
+            calc=4;
+            break;
+        
+        case 2:
+        case 5:
+        case 6:
+        case 8:
+        case 9:
+            calc=5;
+            break;
+    }
+    glDrawElements(GL_LINES, calc*2, GL_UNSIGNED_INT,0 );
+    glBindVertexArray(0);
+}
+
 void engine::drawCircle(){
 
     cout << "Старт отрисовки..." << endl;
@@ -141,7 +176,7 @@ void engine::drawCircle(){
         glClear(GL_COLOR_BUFFER_BIT);
         drawFields(OBJ, inc, type);
         drawLines(OBJ);
-
+        drawNumber(0);
 
 
 

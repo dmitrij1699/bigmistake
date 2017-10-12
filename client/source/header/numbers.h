@@ -4,12 +4,15 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
-#include "header/Shader.h"
+#include "Shader.h"
 #include <vector>
 
 class numbers {
 private:
-    vector<float> 
+    std::vector<GLfloat> vertices;
+public:
+    numbers();
+    GLuint VAO_num(int);
 };
 
 #endif
