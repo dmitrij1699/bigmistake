@@ -19,7 +19,6 @@ using namespace std;
 
 GLuint Ltext(const char str[]); 
 
-void callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 
 void engine::glfwInic(){
     glfwInit();
@@ -28,9 +27,10 @@ void engine::glfwInic(){
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
   
-        //glfwSetKeyCallback(window, engine::callback); 
+   
 
     window = glfwCreateWindow(WIDTH, HEIGHT, "bigmistake", nullptr, nullptr);
+    glfwSetKeyCallback(window, &engine::callback); 
     glfwMakeContextCurrent(window); 
     chErr();
 }
@@ -74,8 +74,15 @@ void engine::shaderInic(){
 
 void engine::textureUse(){
     cout<< "Загрузка текстур" <<endl;
-    texture1= Ltext("../Textures/dirt.png");
-    texture2= Ltext("../Textures/grass.png");
+    dirt= Ltext("../Textures/dirt.png");
+    grass= Ltext("../Textures/grass.png");
+    archer= Ltext("../Textures/defence/archer.png");
+    catapult= Ltext("../Textures/defence/catapult.png");
+    crossbow= Ltext("../Textures/defence/crossbow.png");
+    knight= Ltext("../Textures/attack/knight.png");
+    peasant= Ltext("../Textures/attack/peasant.png");
+    ram= Ltext("../Textures/attack/ram.png");
+    road= Ltext("../Textures/road.png");
     cout<< "Текстуры загружены" <<endl;
     chErr();
 }
@@ -100,11 +107,32 @@ void engine::drawRoutine(){
 
     glUseProgram(SHprog); 
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture1);
+    glBindTexture(GL_TEXTURE_2D, dirt);
     glUniform1i(glGetUniformLocation(SHprog, "dirt"), 0);
     glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, texture2);
+    glBindTexture(GL_TEXTURE_2D, grass);
     glUniform1i(glGetUniformLocation(SHprog, "grass"), 1);  
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, archer);
+    glUniform1i(glGetUniformLocation(SHprog, "archer"), 2);
+    glActiveTexture(GL_TEXTURE3);
+    glBindTexture(GL_TEXTURE_2D, catapult);
+    glUniform1i(glGetUniformLocation(SHprog, "catapult"), 3);  
+    glActiveTexture(GL_TEXTURE4);
+    glBindTexture(GL_TEXTURE_2D, crossbow);
+    glUniform1i(glGetUniformLocation(SHprog, "crossbow"), 4);
+    glActiveTexture(GL_TEXTURE5);
+    glBindTexture(GL_TEXTURE_2D, knight);
+    glUniform1i(glGetUniformLocation(SHprog, "knight"), 5);  
+    glActiveTexture(GL_TEXTURE6);
+    glBindTexture(GL_TEXTURE_2D, peasant);
+    glUniform1i(glGetUniformLocation(SHprog, "peasant"), 6);
+    glActiveTexture(GL_TEXTURE7);
+    glBindTexture(GL_TEXTURE_2D, ram);
+    glUniform1i(glGetUniformLocation(SHprog, "ram"), 7);  
+    glActiveTexture(GL_TEXTURE8);
+    glBindTexture(GL_TEXTURE_2D, road);
+    glUniform1i(glGetUniformLocation(SHprog, "road"), 8);
 }
 
 void engine::drawFields(objects OBJ,GLint inc, GLint type){
@@ -178,7 +206,7 @@ void engine::drawCircle(){
         drawNumber(0);
 
 
-
+        glfwPollEvents();
         
         glfwSwapBuffers(window);
     }
@@ -188,11 +216,6 @@ void engine::drawCircle(){
 void engine::callback(GLFWwindow* window, int key, int scancode, int action, int mode){
         if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
             glfwSetWindowShouldClose(window, GL_TRUE);
-}
-
-void  callback(GLFWwindow* window, int key, int scancode, int action, int mode){
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, GL_TRUE);
 }
 
 

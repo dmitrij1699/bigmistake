@@ -24,14 +24,14 @@ private:
     //uint *fields;
     GLuint SHprog,LineSH, NumberSH;
     GLFWwindow* window;
-    GLuint texture1, texture2;
+    GLuint dirt, grass, archer, catapult, crossbow, knight,peasant, ram, road ;
     GLuint WIDTH, HEIGHT;
     int F_X, F_Y;
     vector<int> fields;
 public:
     engine(const GLuint,const GLuint,const int,const int,  vector<int> );
 
-    void callback(GLFWwindow* , int , int , int , int );
+    static void callback(GLFWwindow* , int , int , int , int );
     //void draw();
 
 };
