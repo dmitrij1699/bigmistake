@@ -5,6 +5,7 @@
 #include <GLFW/glfw3.h>
 #include <vector>
 #include "Shader.h"
+#include "objects.h"
 
 using namespace std;
 
@@ -16,8 +17,11 @@ private:
     void shaderInic();  //Загрузка в SHprog шейдера
     void textureUse();  //Загрузка текстур
     void drawRoutine(); 
+    void drawCircle();
+    void drawFields(objects, GLint, GLint);
+    void drawLines(objects);
     //uint *fields;
-    GLuint SHprog;
+    GLuint SHprog,LineSH;
     GLFWwindow* window;
     GLuint texture1, texture2;
     GLuint WIDTH, HEIGHT;
@@ -25,7 +29,7 @@ private:
     vector<int> fields;
 public:
     engine(const GLuint,const GLuint,const int,const int,  vector<int> );
-    void drawCircle();
+
     void callback(GLFWwindow* , int , int , int , int );
     //void draw();
 

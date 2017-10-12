@@ -19,8 +19,8 @@ using namespace std;
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 GLuint buffersIn();
 GLuint Ltext(const char str[]); 
-const int F_X=5;
-const int F_Y=5;
+const int F_X=15;
+const int F_Y=20;
 
 
 /*int mfields[F_X][F_Y]={

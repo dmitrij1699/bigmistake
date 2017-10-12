@@ -33,6 +33,8 @@ void objects::in(int y, int x){
 
     defVAO();
 
+    defVAOline();
+
     cout.precision(3); 
     cout.setf(ios::fixed);
     cout<<"<<<<<<<<<<<<<<<<<<<" <<endl;
@@ -81,12 +83,6 @@ void objects::defv(){
 
     for(int i=0; i<default_vec.size(); ++i)
     std::cout <<"default_vec["<<i<<"]"<< default_vec[i] <<endl<< ' ';
-    float texture[] = {
-        0.0f, 0.0f, // 0
-        1.0f, 0.0f, // 1
-        1.0f, 1.0f, // 2
-        0.0f, 1.0f // 3
-    };
     //text(texture, sizeof(texture));
     text.size();
     indices = {  
@@ -102,6 +98,10 @@ void objects::defv(){
 
 GLuint objects::getVAO(){
     return VAO;
+}
+
+GLuint objects::getVAOline(){
+    return VAO_line;
 }
 
 void objects::defVAO(){
@@ -155,5 +155,50 @@ void objects::defVAO(){
     glBindVertexArray(0); // Unbind VAO
 }
 
+void objects::defVAOline(){
+    cout<< "defVAOline" <<endl;
+    vector<float> lines((N_X+N_Y-1)*4);
+    for(int i=0; i<(N_X-1);i++){
+        lines[i*4]=-1+size_x*(i+1);
+        lines[i*4+1]=-1;
+        lines[i*4+2]=-1+size_x*(i+1);
+        lines[i*4+3]=1;
+    }
+    cout<<"WTF"<<endl;
+    for(int i=(N_X-1); i<(N_X+N_Y-1);i++){
+        
+        lines[i*4]=-1;
+        lines[i*4+1]=-1+size_y*(i+1-N_X);
+        lines[i*4+2]=1;
+        lines[i*4+3]=-1+size_y*(i+1-N_X);
+    }
+    cout<<"WTF2X"<<endl;
+
+    for(int i=0; i<lines.size(); ++i)
+    std::cout <<"lines["<<i<<"]"<< lines[i] <<endl<< ' ';
+
+    GLuint VBOline;
+    glGenVertexArrays(1, &VAO_line);
+    glGenBuffers(1, &VBOline);
+    glGenBuffers(1, &EBO_line);
+    GLuint posit= VBOline;
+
+    glBindBuffer(GL_ARRAY_BUFFER, posit);
+    glBufferData(GL_ARRAY_BUFFER,lines.size()* sizeof(lines), &lines[0], GL_STATIC_DRAW);
+
+
+    glBindVertexArray(VAO_line);
+    
+    //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    //glBufferData(GL_ELEMENT_ARRAY_BUFFER,indices.size()* sizeof(indices), &indices[0], GL_STATIC_DRAW);
+
+
+    glEnableVertexAttribArray(0);
+
+    glBindBuffer(GL_ARRAY_BUFFER, posit);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, NULL);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0); // Unbind VAO
+}
 
 #endif

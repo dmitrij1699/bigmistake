@@ -16,10 +16,12 @@ private:
     vector<float> VecX;
     vector<float> VecY;
     GLuint VAO, EBO;
+    GLuint VAO_line , EBO_line;
     int N_X, N_Y;
     float size_x, size_y;
     void defv();
     void defVAO();
+    void defVAOline();
 public:
     //           objects(int X,int Y):N_X(X), N_Y(Y){};
 
@@ -33,7 +35,7 @@ public:
     //vector<float> getBuff(){};            // Возвращает готовый буффер для открисовки объектов
     vector<float> GetDefault();
     GLuint getVAO();
-
+    GLuint getVAOline();
 };
 
 

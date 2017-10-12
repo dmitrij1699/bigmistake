@@ -60,6 +60,11 @@ void engine::shaderInic(){
     SHprog= ourShader.Program;
     cout<<"Загрузка шейдерной програмы Успешно!"<<endl;
     chErr();
+    cout<<"Загрузка шейдерной програмы..."<<endl;
+    Shader lineShader("../source/shaders/line.vs", "../source/shaders/line.frag");
+    LineSH= lineShader.Program;
+    cout<<"Загрузка шейдерной програмы Успешно!"<<endl;
+    chErr();
 }
 
 void engine::textureUse(){
@@ -86,9 +91,7 @@ engine::engine(GLuint WIDTH,GLuint HEIGHT,int F_X,int F_Y,vector<int> fields): F
 }
 
 void engine::drawRoutine(){
-    glfwPollEvents();
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    
 
     glUseProgram(SHprog); 
     glActiveTexture(GL_TEXTURE0);
@@ -99,25 +102,47 @@ void engine::drawRoutine(){
     glUniform1i(glGetUniformLocation(SHprog, "grass"), 1);  
 }
 
+void engine::drawFields(objects OBJ,GLint inc, GLint type){
+    drawRoutine();
+    
+    glBindVertexArray(OBJ.getVAO());
+    for(int i=0;i<F_X*F_Y;i++){
+        glUniform2f(inc,OBJ.getVecX(i), OBJ.getVecY(i) );
+        glUniform1i(type,fields[F_X*F_Y-i-1]);
+        glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT, 0 );
+        
+    }
+    glBindVertexArray(0);
+}
+
+void engine::drawLines(objects OBJ){
+    glUseProgram(LineSH);
+    glBindVertexArray(OBJ.getVAOline());
+    int NUMB=(F_X+F_Y-1)*2;
+    glDrawArrays(GL_LINES,0, NUMB );
+    glBindVertexArray(0);
+}
+
 void engine::drawCircle(){
 
     cout << "Старт отрисовки..." << endl;
     objects OBJ;
     OBJ.in(F_X, F_Y);
 
-    drawRoutine();
+    
 
-    glBindVertexArray(OBJ.getVAO());
+    
 
 
     GLint inc = glGetUniformLocation(SHprog, "inc");
     GLint type = glGetUniformLocation(SHprog, "typeT");
     while (!glfwWindowShouldClose(window)) {
-        for(int i=0;i<F_X*F_Y;i++){
-            glUniform2f(inc,OBJ.getVecX(i), OBJ.getVecY(i) );
-            glUniform1i(type,fields[F_X*F_Y-i-1]);
-            glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT, 0 );
-        }
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+        drawFields(OBJ, inc, type);
+        drawLines(OBJ);
+
+
 
 
         
