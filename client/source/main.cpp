@@ -19,8 +19,8 @@ using namespace std;
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 GLuint buffersIn();
 GLuint Ltext(const char str[]); 
-const int F_X=30;
-const int F_Y=30;
+const int F_X=5;
+const int F_Y=5;
 
 
 /*int mfields[F_X][F_Y]={
@@ -34,12 +34,12 @@ const int F_Y=30;
 
 const GLuint WIDTH = 1280, HEIGHT = 720;
 vector<int > fields {
-    //  1  2  3  4  5
-        0, 1, 0, 1, 0, //1
-        0, 1, 1, 1, 1, //2
-        1, 1, 1, 1, 1, //3
-        1, 1, 1, 1, 1, //4
-        1, 1, 1, 1, 1  //5
+    //  4  3  2  1  0
+        0, 1, 1, 8, 0, //0
+        0, 1, 8, 8, 1, //1
+        1, 8, 8, 1, 1, //2
+        8, 8, 1, 1, 1, //3
+        1, 1, 1, 1, 1  //4
     };
 
 GLuint VAO;

@@ -11,6 +11,7 @@
 #include <iostream>
 #include "header/buff.h"
 #include "header/numbers.h"
+#include "header/unit.h"
 
 #include "libs/glm/gtc/type_ptr.hpp"
 
@@ -185,16 +186,33 @@ void engine::drawNumber(int x){
     glBindVertexArray(0);
 }
 
+void engine::drawUnits(objects &OBJ, vector <int> & attack, unit units,GLint inc,GLint type){
+    
+    glUseProgram(SHprog); 
+    glBindVertexArray(OBJ.getVAO());
+    for(int i=0;i<attack.size();i++){
+        cout<< "отрисовка "<<i<<"-го объекта"<< endl;
+        if(units.ch(i)==1) {
+        cout<< "прошел проверку "<<i<<"-ый объект"<< endl;
+        glUniform2f(inc,units.getVecX(i), units.getVecY(i) );
+        glUniform1i(type,attack[i]);
+        glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT, 0 );
+        }
+    }
+    glBindVertexArray(0);
+}
+
+
 void engine::drawCircle(){
 
     cout << "Старт отрисовки..." << endl;
     objects OBJ;
     OBJ.in(F_X, F_Y);
-
+    double time;
+    time=glfwGetTime();
     
-
-    
-
+    vector <int> attack={5, 5, 5, 6, 6,7};
+    unit units(fields, attack, OBJ, F_X, F_Y, time);
 
     GLint inc = glGetUniformLocation(SHprog, "inc");
     GLint type = glGetUniformLocation(SHprog, "typeT");
@@ -203,8 +221,11 @@ void engine::drawCircle(){
         glClear(GL_COLOR_BUFFER_BIT);
         drawFields(OBJ, inc, type);
         drawLines(OBJ);
-        drawNumber(0);
+        drawNumber(1);
 
+        time=glfwGetTime();
+        units.calc(time);
+        drawUnits(OBJ, attack, units,inc, type);
 
         glfwPollEvents();
         

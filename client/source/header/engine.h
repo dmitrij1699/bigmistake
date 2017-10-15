@@ -6,6 +6,7 @@
 #include <vector>
 #include "Shader.h"
 #include "objects.h"
+#include "unit.h"
 
 using namespace std;
 
@@ -21,6 +22,7 @@ private:
     void drawFields(objects, GLint, GLint);
     void drawLines(objects);
     void drawNumber(int);
+    void drawUnits(objects &,vector <int> &,unit , GLint, GLint );
     //uint *fields;
     GLuint SHprog,LineSH, NumberSH;
     GLFWwindow* window;
@@ -28,6 +30,7 @@ private:
     GLuint WIDTH, HEIGHT;
     int F_X, F_Y;
     vector<int> fields;
+    double time;
 public:
     engine(const GLuint,const GLuint,const int,const int,  vector<int> );
 

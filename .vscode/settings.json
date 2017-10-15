@@ -10,6 +10,9 @@
         "*.tcc": "cpp",
         "functional": "cpp",
         "tuple": "cpp",
-        "type_traits": "cpp"
+        "type_traits": "cpp",
+        "hash_map": "cpp",
+        "hash_set": "cpp",
+        "cmath": "cpp"
     }
 }

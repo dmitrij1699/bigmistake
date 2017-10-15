@@ -1,26 +1,15 @@
 #include "../source/header/objects.h"
+#include "../source/header/unit.h"
 #include <gtest/gtest.h>
 
 namespace {
 
-// Тестовый класс для тестирования класса Foo.
 class objTest : public ::testing::Test {
  protected:
 
-  // Можете удалить любую или все из функций ниже, если они пустые.
 
- // FooTest() {
-    // Здесь можно подготовить тестовые данные для каждого теста.
-//  }
 
- // virtual ~FooTest() {
-    // Здесь производится чистка мусора. Данная функция не должна
-    // генерировать исключений.
- // }
 
-  // Если конструктор или деструктор не подходят вам для настройки
-  // тестовых данных и чистки мусора, то можете использовать следующие
-  // методы:
 
   virtual void SetUp() {
       q0.in(1,1);
@@ -28,19 +17,36 @@ class objTest : public ::testing::Test {
       q2.in(1,2);
       q3.in(3,3);
       q4.in(2,3 );
-    // Данная функция вызывается сразу после конструктора (до теста).
+   
   }
 
-//  virtual void TearDown() {
-    // Данная функция вызывается сразу после теста (до деструктора).
- // }
+
   objects q0,q1,q2,q3,q4,q5,q6;
 
-  // Объекты, объявленные тут, могут быть использованы во всем тестовом
-  // классе Foo.
 };
 
-// Проверяем, что метод Foo::Bar() правильно делает функцию Abc.
+class unitTest : public ::testing::Test {
+protected:
+
+
+
+
+
+ virtual void SetUp() {
+     q0.in(1,1);
+     q1.in(2,2);
+     q2.in(1,2);
+     q3.in(3,3);
+     q4.in(2,3 );
+  
+ }
+
+
+ objects q0,q1,q2,q3,q4,q5,q6;
+
+};
+
+
 TEST_F(objTest, getCount) {
   EXPECT_EQ(1,q0.getCount());
   EXPECT_EQ(4,q1.getCount());
@@ -117,8 +123,7 @@ TEST_F(objTest, getVecY ) {
   ASSERT_NEAR( 0.5,q4.getVecY(5), 0.001); 
 }
 
- 
-// Проверяем, что класс Foo правильно выполняет задачу Xyz.
+
 
 }  // namespace
 

@@ -11,7 +11,8 @@ set(SOURCE "source/main.cpp"
     "source/Ltext.cpp" 
     "source/engine.cpp" 
     "source/objects.cpp"
-    "source/numbers.cpp" )
+    "source/numbers.cpp"
+    "source/unit.cpp" )
 
 add_executable(bigmistake ${SOURCE})
 
