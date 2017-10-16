@@ -15,7 +15,8 @@ private:
     GLuint VAO, shader;
     vector<GLuint> indices;
     float size, pos_x, pos_y;
-    vector<int> num;
+    vector<int> num;    //сколько рисуется линий для отрисовки i-ой буквы
+    GLint biass, inc, size_un;
 
 public:
     bukavki(string);  //инициализация. передача строки для отрисовки

@@ -33,9 +33,12 @@ private:
     int F_X, F_Y;
     vector<int> fields;
     double time;
+    double xpos,  ypos;
 public:
     engine(const GLuint,const GLuint,const int,const int,  vector<int> );
 
+    void convert(double, double);
+    static void curs_callback(GLFWwindow* , double , double );
     static void callback(GLFWwindow* , int , int , int , int );
     //void draw();
 

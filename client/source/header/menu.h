@@ -18,6 +18,7 @@ private:
     GLuint VAO;
     vector<string> str;
     vector<int> strI;
+    vector<vector<int>> strMas;
     vector<GLuint> indices;
     vector<GLfloat> coord;
     GLuint shader;

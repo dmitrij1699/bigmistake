@@ -33,6 +33,10 @@ void choose::genDefault(){
     });
 }
 
+void choose::draw(){
+    
+}
+
 choose::choose(double dtime):time(dtime){
     genDefault();
 }

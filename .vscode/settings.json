@@ -13,6 +13,7 @@
         "type_traits": "cpp",
         "hash_map": "cpp",
         "hash_set": "cpp",
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "sstream": "cpp"
     }
 }

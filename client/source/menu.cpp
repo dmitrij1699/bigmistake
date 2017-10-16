@@ -10,6 +10,7 @@
 #include "header/menu.h"
 #include "header/Shader.h"
 #include "header/bukavki.h"
+#include <cmath>
 
 void menu::addNewItem(string str_in){
     
@@ -56,38 +57,42 @@ void menu::addNewItem(string str_in){
 }
 
 void menu::addNewItem(vector<int> str_in){
-    
+    coord.clear();
+    indices.clear();
     strI.push_back(str_in[0]);
-    if (strI.size()<=1 ){
+
+        strMas.push_back(str_in);
+
         coord.insert(coord.end(), {-0.75, -0.75, //0
                         0.75,   -0.75, //1
                         0.75,   0.75, //2
                         -0.75,  0.75} ); //3
         indices.insert(indices.end(), {0,1,2, 0,2,3});
-    } else {
+        cout<<"STR.SIZE"<<strI.size()<< endl;
         float part=(float) 6*strI.size()+(strI.size()-1);  // 6/6-сам объект, 1/6-растояние между ними
         float diff_y=1.5/part;
         coord[5]=-0.75+6*diff_y;
-        coord[7]=coord[5];
-        for(int i=0;i< (strI.size()-1) ;i++){
-            coord.push_back( -0.75 );
-            coord.push_back( coord[ 8*i+5 ]+diff_y);
-            coord.push_back( 0.75 );
-            coord.push_back( coord[8*i+5 ]+diff_y);
+        coord[7]=coord[5]; 
 
-            coord.push_back( -0.75 );
-            coord.push_back( coord[ 8*(i+1)+1 ]+6*diff_y);
-            coord.push_back( 0.75 );
-            coord.push_back( coord[ 8*(i+1)+1 ]+6*diff_y);
+        for(int i=1; i<strI.size();i++){
+            coord.push_back( -0.75 );                       //8,16
+            coord.push_back( coord[ 8*(i-1)+5 ]+diff_y);    //9, 17
+            coord.push_back( 0.75 );                        //10,18
+            coord.push_back( coord[8*(i-1)+5 ]+diff_y);     //11,19
 
-            indices.push_back(4*(i+1) );
-            indices.push_back(4*(i+1)+1);
-            indices.push_back(4*(i+1)+2);
-            indices.push_back(4*(i+1)+1);
-            indices.push_back(4*(i+1)+2);
-            indices.push_back(4*(i+1)+3);
+            coord.push_back( -0.75 );                       //12,20
+            coord.push_back( coord[ 8*i+1 ]+6*diff_y);      //13,21
+            coord.push_back( 0.75 );                        //14,22
+            coord.push_back( coord[ 8*i+1 ]+6*diff_y);      //15,23
+
+            indices.push_back(4*i );
+            indices.push_back(4*i+1);
+            indices.push_back(4*i+2);
+            indices.push_back(4*i+1);
+            indices.push_back(4*i+2);
+            indices.push_back(4*i+3);
         }
-    }
+    
 
     for(int i=0; i<coord.size(); i++){
         cout<< "coord["<<i<<"]="<<fixed<<coord[i]<<endl;
@@ -140,13 +145,15 @@ void menu::draw(){
 void menu::drawPoints(){
     glUseProgram(shader);
     glBindVertexArray(VAO);
-    glDrawElements(GL_TRIANGLES,12,GL_UNSIGNED_INT, 0 );
+    glDrawElements(GL_TRIANGLES, 6*strI.size(),GL_UNSIGNED_INT, 0 );
     glBindVertexArray(0);
 }
 
 void menu::drawWords(){
+    
     for(int i=0; i<strI.size(); i++){
-        bukavki bb( strI ,0.6, -0.75 , coord[i*8+1]-coord[i*8+4] );
+        float coef=fabs(-coord[i*8+5]-coord[i*8+1]);
+        bukavki bb( strMas[i] ,coef/2*0.3, -0.75 , (-coord[i*8+5]-coord[i*8+1] ) /2);
         bb.setVAO();
         bb.draw();
     }

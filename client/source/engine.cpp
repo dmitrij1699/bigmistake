@@ -34,6 +34,7 @@ void engine::glfwInic(){
 
     window = glfwCreateWindow(WIDTH, HEIGHT, "bigmistake", nullptr, nullptr);
     glfwSetKeyCallback(window, &engine::callback); 
+    glfwSetCursorPosCallback(window, &engine::curs_callback);
     glfwMakeContextCurrent(window); 
     chErr();
 }
@@ -221,23 +222,32 @@ void engine::drawCircle(){
     string str=u8"старт";
     cout<<str<<"<<<<<<<<<<<<<<<<<<<<<"<<endl;
     menu main_menu;
-    vector<int> strI {0,1,0, 1};
+    vector<int> strI {0,1,0, 1};        //старт
     main_menu.addNewItem(strI);
     str=u8"опции";
     cout<<str<<"<<<<<<<<<<<<<<<<<<<<<"<<endl;
-    main_menu.addNewItem(strI);
+    vector<int> strI1 {0,1,0,1,1, 1};       //опции
+    main_menu.addNewItem(strI1);
+    vector<int> strI2 {0,1,0, 1,0,0};       //выход
+    main_menu.addNewItem(strI2);
     //vector <int> attack={5, 5, 5, 6, 6,7};
     //unit units(fields, attack, OBJ, F_X, F_Y, time);
 
     GLint inc = glGetUniformLocation(SHprog, "inc");
     GLint type = glGetUniformLocation(SHprog, "typeT");
     while (!glfwWindowShouldClose(window)) {
+        glfwGetCursorPos(window, &xpos, &ypos);
+        //cout<<"xpos="<<xpos<<", ypos="<<ypos<<endl;
+
+        int state = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
+        if (state == GLFW_PRESS) cout<<"press!!!"<<endl;
+
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         //drawFields(OBJ, inc, type);
         //drawLines(OBJ);
         //drawNumber(1);
-        drawMenu(main_menu);
+        //drawMenu(main_menu);
         //time=glfwGetTime();
         //units.calc(time);
         //drawUnits(OBJ, attack, units,inc, type);
@@ -255,9 +265,15 @@ void engine::callback(GLFWwindow* window, int key, int scancode, int action, int
 }
 
 
+void engine::curs_callback(GLFWwindow* window, double xpos_in, double ypos_in){
 
+    //cout<<"xpos="<<xpos_in<<", ypos="<<ypos_in<<endl;
+}
 
-
+void engine::convert(double xpos_in, double ypos_in){
+    xpos=xpos_in;
+    ypos=ypos_in;
+}
 
 
 #endif
