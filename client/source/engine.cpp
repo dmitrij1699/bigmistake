@@ -163,9 +163,11 @@ void engine::drawNumber(int x){
     glBindVertexArray(num.VAO_num(x));
     int calc=0;
     switch(x){
-        case 4:
-        case 7: 
         case 1:
+        case 7:
+            calc=2;
+            break;
+        case 4:
             calc=3;
             break;
         
@@ -217,7 +219,7 @@ void engine::drawCircle(){
     GLint inc = glGetUniformLocation(SHprog, "inc");
     GLint type = glGetUniformLocation(SHprog, "typeT");
     while (!glfwWindowShouldClose(window)) {
-        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         drawFields(OBJ, inc, type);
         drawLines(OBJ);
