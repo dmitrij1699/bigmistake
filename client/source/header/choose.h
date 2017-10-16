@@ -21,6 +21,7 @@ public:
     void genDefault();
     void genBySize(float); //принимает размер интерфейса
     int buy(double, double); //проверяет покупку. тригеррится при щелчке мыши. возвращает номер покупки.
+    
 };
 
 #endif

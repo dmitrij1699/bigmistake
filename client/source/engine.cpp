@@ -12,6 +12,8 @@
 #include "header/buff.h"
 #include "header/numbers.h"
 #include "header/unit.h"
+#include "header/menu.h"
+#include <string>
 
 #include "libs/glm/gtc/type_ptr.hpp"
 
@@ -188,6 +190,10 @@ void engine::drawNumber(int x){
     glBindVertexArray(0);
 }
 
+void engine::drawMenu(menu main_menu){
+    main_menu.draw();
+}
+
 void engine::drawUnits(objects &OBJ, vector <int> & attack, unit units,GLint inc,GLint type){
     
     glUseProgram(SHprog); 
@@ -208,26 +214,33 @@ void engine::drawUnits(objects &OBJ, vector <int> & attack, unit units,GLint inc
 void engine::drawCircle(){
 
     cout << "Старт отрисовки..." << endl;
-    objects OBJ;
-    OBJ.in(F_X, F_Y);
+    //objects OBJ;
+    //OBJ.in(F_X, F_Y);
     double time;
     time=glfwGetTime();
-    
-    vector <int> attack={5, 5, 5, 6, 6,7};
-    unit units(fields, attack, OBJ, F_X, F_Y, time);
+    string str=u8"старт";
+    cout<<str<<"<<<<<<<<<<<<<<<<<<<<<"<<endl;
+    menu main_menu;
+    vector<int> strI {0,1,0, 1};
+    main_menu.addNewItem(strI);
+    str=u8"опции";
+    cout<<str<<"<<<<<<<<<<<<<<<<<<<<<"<<endl;
+    main_menu.addNewItem(strI);
+    //vector <int> attack={5, 5, 5, 6, 6,7};
+    //unit units(fields, attack, OBJ, F_X, F_Y, time);
 
     GLint inc = glGetUniformLocation(SHprog, "inc");
     GLint type = glGetUniformLocation(SHprog, "typeT");
     while (!glfwWindowShouldClose(window)) {
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        drawFields(OBJ, inc, type);
-        drawLines(OBJ);
-        drawNumber(1);
-
-        time=glfwGetTime();
-        units.calc(time);
-        drawUnits(OBJ, attack, units,inc, type);
+        //drawFields(OBJ, inc, type);
+        //drawLines(OBJ);
+        //drawNumber(1);
+        drawMenu(main_menu);
+        //time=glfwGetTime();
+        //units.calc(time);
+        //drawUnits(OBJ, attack, units,inc, type);
 
         glfwPollEvents();
         

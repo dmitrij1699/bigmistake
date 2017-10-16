@@ -7,6 +7,9 @@
 #include <vector>
 #include <cstring> 
 #include "header/engine.h"
+#include <clocale>
+#include <locale>
+
 
 #include "libs/glm/vector_relational.hpp"
 #include "libs/glm/mat4x4.hpp" 
@@ -46,6 +49,7 @@ GLuint VAO;
 int main()
 {
 
+    
     
     engine start(WIDTH, HEIGHT, F_X, F_Y,  fields);
     

@@ -7,10 +7,12 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "Shader.h"
 using namespace std;
 
 class bukavki{
 private:
+    GLuint VAO, shader;
     vector<GLuint> indices;
     float size, pos_x, pos_y;
     vector<int> num;
@@ -18,10 +20,13 @@ private:
 public:
     bukavki(string);  //инициализация. передача строки для отрисовки
     bukavki(string, float); //инициализация. передача строки для отрисовки+размер букв
-    bukavki(string, float, float, float); //инициализация. передача строки для отрисовки+размер букв+X и Y вектора смещения
-    GLuint getVAO();
+    //bukavki(string, float, float, float); //инициализация. передача строки для отрисовки+размер букв+X и Y вектора смещения
+    bukavki(vector<int>, float, float, float);
+    void setVAO();
     int getNum();
-    void addNewChar(char );
+    //void addNewChar(char );
+    void addNewChar(int );
+    void draw();
 };
 
 #endif

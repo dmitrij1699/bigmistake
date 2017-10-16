@@ -9,17 +9,26 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "bukavki.h"
 
 using namespace std;
 
 class menu{
 private:
+    GLuint VAO;
     vector<string> str;
+    vector<int> strI;
     vector<GLuint> indices;
-    vector<Glfloat> coord;
+    vector<GLfloat> coord;
+    GLuint shader;
+    void drawPoints();
+    void drawWords();
 
 public:
     void addNewItem(string);
+    void addNewItem(vector<int>);
+    void createVAO();
+    void draw();
     //int backlight(double, double); 
 };
 #endif

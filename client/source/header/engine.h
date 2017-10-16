@@ -7,6 +7,7 @@
 #include "Shader.h"
 #include "objects.h"
 #include "unit.h"
+#include "menu.h"
 
 using namespace std;
 
@@ -21,6 +22,7 @@ private:
     void drawCircle();
     void drawFields(objects, GLint, GLint);
     void drawLines(objects);
+    void drawMenu(menu);
     void drawNumber(int);
     void drawUnits(objects &,vector <int> &,unit , GLint, GLint );
     //uint *fields;

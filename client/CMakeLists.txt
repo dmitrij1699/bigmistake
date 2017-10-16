@@ -12,7 +12,9 @@ set(SOURCE "source/main.cpp"
     "source/engine.cpp" 
     "source/objects.cpp"
     "source/numbers.cpp"
-    "source/unit.cpp" )
+    "source/unit.cpp" 
+    "source/menu.cpp"
+    "source/bukavki.cpp" )
 
 add_executable(bigmistake ${SOURCE})
 
