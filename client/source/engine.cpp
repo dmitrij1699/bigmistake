@@ -58,45 +58,14 @@ void engine::chErr(){
     }
 }
 
-void engine::shaderInic(){
-    cout<<"Загрузка шейдерной програмы..."<<endl;
-    Shader ourShader("../source/shaders/object.vs", "../source/shaders/object.frag");
-    SHprog= ourShader.Program;
-    cout<<"Загрузка шейдерной програмы Успешно!"<<endl;
-    chErr();
-    cout<<"Загрузка шейдерной програмы..."<<endl;
-    Shader lineShader("../source/shaders/line.vs", "../source/shaders/line.frag");
-    LineSH= lineShader.Program;
-    cout<<"Загрузка шейдерной програмы Успешно!"<<endl;
-    chErr();
-    cout<<"Загрузка шейдерной програмы..."<<endl;
-    Shader numberShader("../source/shaders/number.vs", "../source/shaders/number.frag");
-    NumberSH= numberShader.Program;
-    cout<<"Загрузка шейдерной програмы Успешно!"<<endl;
-    chErr();
-}
 
-void engine::textureUse(){
-    cout<< "Загрузка текстур" <<endl;
-    dirt= Ltext("../Textures/dirt.png");
-    grass= Ltext("../Textures/grass.png");
-    archer= Ltext("../Textures/defence/archer.png");
-    catapult= Ltext("../Textures/defence/catapult.png");
-    crossbow= Ltext("../Textures/defence/crossbow.png");
-    knight= Ltext("../Textures/attack/knight.png");
-    peasant= Ltext("../Textures/attack/peasant.png");
-    ram= Ltext("../Textures/attack/ram.png");
-    road= Ltext("../Textures/road.png");
-    cout<< "Текстуры загружены" <<endl;
-    chErr();
-}
+
+
 
 engine::engine(GLuint WIDTH,GLuint HEIGHT,int F_X,int F_Y,vector<int> fields): F_X(F_X), F_Y(F_Y),WIDTH(WIDTH), HEIGHT(HEIGHT), fields(fields)  {
     cout << "Старт инициализации..." << endl;
     glfwInic(); //Инициализация glfw
     glewInic(); //Инициализация glew
-    shaderInic();
-    textureUse();
  
     
     glViewport(0, 0, WIDTH, HEIGHT);
@@ -106,62 +75,9 @@ engine::engine(GLuint WIDTH,GLuint HEIGHT,int F_X,int F_Y,vector<int> fields): F
 
 }
 
-void engine::drawRoutine(){
-    
 
-    glUseProgram(SHprog); 
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, dirt);
-    glUniform1i(glGetUniformLocation(SHprog, "dirt"), 0);
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, grass);
-    glUniform1i(glGetUniformLocation(SHprog, "grass"), 1);  
-    glActiveTexture(GL_TEXTURE2);
-    glBindTexture(GL_TEXTURE_2D, archer);
-    glUniform1i(glGetUniformLocation(SHprog, "archer"), 2);
-    glActiveTexture(GL_TEXTURE3);
-    glBindTexture(GL_TEXTURE_2D, catapult);
-    glUniform1i(glGetUniformLocation(SHprog, "catapult"), 3);  
-    glActiveTexture(GL_TEXTURE4);
-    glBindTexture(GL_TEXTURE_2D, crossbow);
-    glUniform1i(glGetUniformLocation(SHprog, "crossbow"), 4);
-    glActiveTexture(GL_TEXTURE5);
-    glBindTexture(GL_TEXTURE_2D, knight);
-    glUniform1i(glGetUniformLocation(SHprog, "knight"), 5);  
-    glActiveTexture(GL_TEXTURE6);
-    glBindTexture(GL_TEXTURE_2D, peasant);
-    glUniform1i(glGetUniformLocation(SHprog, "peasant"), 6);
-    glActiveTexture(GL_TEXTURE7);
-    glBindTexture(GL_TEXTURE_2D, ram);
-    glUniform1i(glGetUniformLocation(SHprog, "ram"), 7);  
-    glActiveTexture(GL_TEXTURE8);
-    glBindTexture(GL_TEXTURE_2D, road);
-    glUniform1i(glGetUniformLocation(SHprog, "road"), 8);
-}
-
-void engine::drawFields(objects OBJ,GLint inc, GLint type){
-    drawRoutine();
-    
-    glBindVertexArray(OBJ.getVAO());
-    for(int i=0;i<F_X*F_Y;i++){
-        glUniform2f(inc,OBJ.getVecX(i), OBJ.getVecY(i) );
-        glUniform1i(type,fields[F_X*F_Y-i-1]);
-        glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT, 0 );
-        
-    }
-    glBindVertexArray(0);
-}
-
-void engine::drawLines(objects OBJ){
-    glUseProgram(LineSH);
-    glBindVertexArray(OBJ.getVAOline());
-    int NUMB=(F_X+F_Y-1)*2;
-    glDrawArrays(GL_LINES,0, NUMB );
-    glBindVertexArray(0);
-}
 
 void engine::drawNumber(int x){
-    glUseProgram(NumberSH);
     numbers num;
     //glBindVertexArray(num.VAO_num(x));
     int calc=0;
@@ -195,7 +111,7 @@ void engine::drawMenu(menu main_menu){
     main_menu.draw();
 }
 
-void engine::drawUnits(objects &OBJ, vector <int> & attack, unit units,GLint inc,GLint type){
+/*void engine::drawUnits(objects &OBJ, vector <int> & attack, unit units,GLint inc,GLint type){
     
     glUseProgram(SHprog); 
     glBindVertexArray(OBJ.getVAO());
@@ -209,34 +125,36 @@ void engine::drawUnits(objects &OBJ, vector <int> & attack, unit units,GLint inc
         }
     }
     glBindVertexArray(0);
-}
+}*/
 
 
 void engine::drawCircle(){
-
+    int state=0;
+    double xpos, ypos;
     cout << "Старт отрисовки..." << endl;
-    //objects OBJ;
-    //OBJ.in(F_X, F_Y);
+    objects OBJ(&fields[0]);
+    OBJ.in(F_X, F_Y);
     double time;
     time=glfwGetTime();
-    string str=u8"старт";
-    cout<<str<<"<<<<<<<<<<<<<<<<<<<<<"<<endl;
     menu main_menu;
     vector<int> strI {0,1,0, 1};
     main_menu.addNewItem(strI);
-    str=u8"опции";
-    cout<<str<<"<<<<<<<<<<<<<<<<<<<<<"<<endl;
     main_menu.addNewItem(strI);
     //vector <int> attack={5, 5, 5, 6, 6,7};
     //unit units(fields, attack, OBJ, F_X, F_Y, time);
 
-    choose wow(time, true);
+    choose wow(time, false, &xpos, &ypos, &state, WIDTH,HEIGHT );
+    cout<<"HEIGHT="<<HEIGHT<<", WIDTH="<<WIDTH<< endl;
 
-    GLint inc = glGetUniformLocation(SHprog, "inc");
-    GLint type = glGetUniformLocation(SHprog, "typeT");
     while (!glfwWindowShouldClose(window)) {
+
+        glfwGetCursorPos(window, &xpos, &ypos);
+        state = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
+        
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        OBJ.draw();
         //drawFields(OBJ, inc, type);
         //drawLines(OBJ);
         //drawNumber(1);

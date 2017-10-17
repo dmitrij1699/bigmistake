@@ -11,17 +11,43 @@
 
 using namespace std;
 
-int objects::getN_Y(){
-    return N_Y;
+
+GLuint Ltext(const char str[]); 
+
+
+
+void objects::draw(){
+    drawUnits();
+    drawLines();
 }
 
-int objects::getN_X(){
-    return N_X;
+void objects::drawLines(){
+    glUseProgram(shader_line);
+    glBindVertexArray(VAO_line);
+    int NUMB=(N_X+N_Y-1)*2;
+    glDrawArrays(GL_LINES,0, NUMB );
+    glBindVertexArray(0);
+}
+
+void objects::drawUnits(){
+    glUseProgram(shader_obj);
+    bindTexture();
+    glBindVertexArray(VAO);
+    for(int i=0;i<N_X*N_Y;i++){
+        glUniform2f(inc, VecX[i], VecY[i] );
+            cout<<"fields["<<i<<"]=" <<fields[N_X*N_Y-i-1]<<endl;
+        glUniform1i(type, fields[N_X*N_Y-i-1]);
+        glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT, 0 );
+        
+    }
+    glBindVertexArray(0);
 }
 
 void objects::in(int y, int x){
     N_X=(x); 
     N_Y=(y);
+
+    
 
     size_x=(float ) 2/x;
     size_y=(float ) 2/y;
@@ -32,36 +58,33 @@ void objects::in(int y, int x){
     defv();
 
     defVAO();
+    texture_use();
+
+
 
     defVAOline();
 
-    cout.precision(3); 
-    cout.setf(ios::fixed);
-    cout<<"<<<<<<<<<<<<<<<<<<<" <<endl;
+
 
 
 
     float def_x= -1-( -((float ) size_x/2));
     float def_y= -1-( -((float ) size_y/2));
-    cout<<"def_x="<<def_x<<"; def_y="<<def_y<< endl;
     for(int i=0;i<y;i++){
 
         for(int j=0;j<x;j++){
             VecX[j+i*x]=def_x+size_x*(j);
-            cout<<"j="<<j<<"; VecX["<<j+i*x<<"]="<<VecX[j+i*x]<< endl;
+
             VecY[j+i*x]=def_y+size_y*i;
         }
                  
     }
 }
 
-float objects::getVecX(int number){
-    return VecX[number];
+objects::objects(int *fields){
+    this->fields=fields;
 }
 
-float objects::getVecY(int number){
-    return VecY[number];
-}
 
 
 void objects::defv(){
@@ -76,14 +99,7 @@ void objects::defv(){
     default_vec[5]=size_y/2;
     default_vec[6]=size_x/2;
     default_vec[7]=size_y/2;
-    cout.precision(3); 
-    cout.setf(ios::fixed);
 
-    cout<<"size_x="<<size_x << "; size_y="<<size_y<< endl;
-
-    for(int i=0; i<default_vec.size(); ++i)
-    std::cout <<"default_vec["<<i<<"]"<< default_vec[i] <<endl<< ' ';
-    //text(texture, sizeof(texture));
     text.size();
     indices = {  
         0, 1, 2, 
@@ -91,20 +107,16 @@ void objects::defv(){
     };
 }
 
-//vector<float> GetDefault(){
-  //  return default_vec;
-//}
 
 
-GLuint objects::getVAO(){
-    return VAO;
-}
-
-GLuint objects::getVAOline(){
-    return VAO_line;
-}
 
 void objects::defVAO(){
+    Shader ourShader("../source/shaders/object.vs", "../source/shaders/object.frag");
+    shader_obj= ourShader.Program;
+    inc = glGetUniformLocation(shader_obj, "inc");
+    type = glGetUniformLocation(shader_obj, "typeT");
+
+
     float texture[] = {
         0.0f, 0.0f, // 0
         1.0f, 0.0f, // 1
@@ -156,7 +168,10 @@ void objects::defVAO(){
 }
 
 void objects::defVAOline(){
-    cout<< "defVAOline" <<endl;
+
+    Shader lineShader("../source/shaders/line.vs", "../source/shaders/line.frag");
+    shader_line= lineShader.Program;
+
     vector<float> lines((N_X+N_Y-1)*4);
     for(int i=0; i<(N_X-1);i++){
         lines[i*4]=-1+size_x*(i+1);
@@ -164,7 +179,7 @@ void objects::defVAOline(){
         lines[i*4+2]=-1+size_x*(i+1);
         lines[i*4+3]=1;
     }
-    cout<<"WTF"<<endl;
+
     for(int i=(N_X-1); i<(N_X+N_Y-1);i++){
         
         lines[i*4]=-1;
@@ -172,10 +187,9 @@ void objects::defVAOline(){
         lines[i*4+2]=1;
         lines[i*4+3]=-1+size_y*(i+1-N_X);
     }
-    cout<<"WTF2X"<<endl;
 
-    for(int i=0; i<lines.size(); ++i)
-    std::cout <<"lines["<<i<<"]"<< lines[i] <<endl<< ' ';
+
+
 
     GLuint VBOline;
     glGenVertexArrays(1, &VAO_line);
@@ -189,9 +203,7 @@ void objects::defVAOline(){
 
     glBindVertexArray(VAO_line);
     
-    //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    //glBufferData(GL_ELEMENT_ARRAY_BUFFER,indices.size()* sizeof(indices), &indices[0], GL_STATIC_DRAW);
-
+   
 
     glEnableVertexAttribArray(0);
 
@@ -199,6 +211,82 @@ void objects::defVAOline(){
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, NULL);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0); // Unbind VAO
+}
+
+
+void objects::texture_use(){
+    
+
+    dirt= Ltext("../Textures/dirt.png");
+    grass= Ltext("../Textures/grass.png");
+    archer= Ltext("../Textures/defence/archer.png");
+    catapult= Ltext("../Textures/defence/catapult.png");
+    crossbow= Ltext("../Textures/defence/crossbow.png");
+    knight= Ltext("../Textures/attack/knight.png");
+    peasant= Ltext("../Textures/attack/peasant.png");
+    ram= Ltext("../Textures/attack/ram.png");
+    road= Ltext("../Textures/road.png");
+    cout<< "Текстуры загружены" <<endl;
+
+  
+    
+
+}
+
+void objects::bindTexture(){
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, dirt);
+    glUniform1i(glGetUniformLocation(shader_obj, "dirt"), 0);
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, grass);
+    glUniform1i(glGetUniformLocation(shader_obj, "grass"), 1);  
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, archer);
+    glUniform1i(glGetUniformLocation(shader_obj, "archer"), 2);
+    glActiveTexture(GL_TEXTURE3);
+    glBindTexture(GL_TEXTURE_2D, catapult);
+    glUniform1i(glGetUniformLocation(shader_obj, "catapult"), 3);  
+    glActiveTexture(GL_TEXTURE4);
+    glBindTexture(GL_TEXTURE_2D, crossbow);
+    glUniform1i(glGetUniformLocation(shader_obj, "crossbow"), 4);
+    glActiveTexture(GL_TEXTURE5);
+    glBindTexture(GL_TEXTURE_2D, knight);
+    glUniform1i(glGetUniformLocation(shader_obj, "knight"), 5);  
+    glActiveTexture(GL_TEXTURE6);
+    glBindTexture(GL_TEXTURE_2D, peasant);
+    glUniform1i(glGetUniformLocation(shader_obj, "peasant"), 6);
+    glActiveTexture(GL_TEXTURE7);
+    glBindTexture(GL_TEXTURE_2D, ram);
+    glUniform1i(glGetUniformLocation(shader_obj, "ram"), 7);  
+    glActiveTexture(GL_TEXTURE8);
+    glBindTexture(GL_TEXTURE_2D, road);
+    glUniform1i(glGetUniformLocation(shader_obj, "road"), 8);
+}
+
+// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+float objects::getVecX(int number){
+    return VecX[number];
+}
+
+float objects::getVecY(int number){
+    return VecY[number];
+}
+
+GLuint objects::getVAO(){
+    return VAO;
+}
+
+GLuint objects::getVAOline(){
+    return VAO_line;
+}
+
+int objects::getN_Y(){
+    return N_Y;
+}
+
+int objects::getN_X(){
+    return N_X;
 }
 
 #endif

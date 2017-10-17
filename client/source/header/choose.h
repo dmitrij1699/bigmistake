@@ -16,23 +16,33 @@ private:
     void drawVariables();
     void VAOvariables();
     void textureSet();
+    void callback();
+    void click();
+
+    int* state;
+    double* pos_x, *pos_y;
 
     vector<float> vertices, text;
     vector<GLuint> indices;
-    GLuint VAO, shader, type, inc;
+    GLuint VAO, shader, type, inc, WIDTH,HEIGHT;
 
     vector<int> typeT;
+    vector<int> price;
+
+    
 
     GLuint archer,catapult,crossbow,knight,peasant, ram;
 
+    bool release;
+
     double time, time0;
-    unsigned int money;         //доступные деньги
+    int money;         //доступные деньги
     vector<int> choice;         //вектор, в который скидываем "покупки"
 public:
-    choose(double, bool);              //получает на вход временя старта.
+    choose(double, bool, double*, double*, int*, GLuint, GLuint);              //получает на вход временя старта.
     void genDefault();
     void genBySize(float); //принимает размер интерфейса
-    int buy(double, double){}; //проверяет покупку. тригеррится при щелчке мыши. возвращает номер покупки.
+    void buy(int); //проверяет покупку. тригеррится при щелчке мыши. возвращает номер покупки.
     void draw();
 
 };

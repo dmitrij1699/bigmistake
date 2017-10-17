@@ -16,27 +16,27 @@ uniform int typeT;
 void main()
 {
 	switch(typeT) {
-		case 2:{
+		case 0:{
 			color = texture(archer, TexCoord);
 			break;
 		}
-		case 3:{
+		case 1:{
 			color = texture(catapult, TexCoord);
 			break;
 		}
-		case 4:{
+		case 2:{
 			color = texture(crossbow, TexCoord);
 			break;
 		}
-		case 5:{
+		case 3:{
 			color = texture(knight, TexCoord);
 			break;
 		}
-		case 6:{
+		case 4:{
 			color = texture(peasant, TexCoord);
 			break;
 		}
-		case 7:{
+		case 5:{
 			color = texture(ram, TexCoord);
 			break;
 		}

@@ -9,6 +9,8 @@ using namespace std;
 
 class objects {
 private:
+    GLuint dirt, grass,archer,catapult,crossbow,knight,peasant,ram,road;
+    int *fields;
     vector<float> default_vec;
     vector<float> vertices;
     vector<GLuint> indices; //порядок отрисовки
@@ -17,14 +19,22 @@ private:
     vector<float> VecY;
     GLuint VAO, EBO;
     GLuint VAO_line , EBO_line;
+    GLuint shader_obj,shader_line ;
+    GLint inc, type;
     int N_X, N_Y;
     float size_x, size_y;
     void defv();
     void defVAO();
     void defVAOline();
+    void drawUnits();
+    void drawLines();
+    void texture_use();
+    void bindTexture();
 public:
     //           objects(int X,int Y):N_X(X), N_Y(Y){};
+    objects(int *);
 
+    void draw();
     void in(int x, int y);
     int getN_X();
     int getN_Y();

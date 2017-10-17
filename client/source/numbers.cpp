@@ -22,6 +22,8 @@ numbers::numbers(){
     num={
         4, 2,5, 4, 3, 5,5,3,5,5
     };
+    Shader olol("../source/shaders/number.vs", "../source/shaders/number.frag");
+    shader= olol.Program;
 
 }
 
@@ -129,8 +131,7 @@ void numbers::VAO_num(int x){
 
     
 
-    Shader olol("../source/shaders/number.vs", "../source/shaders/number.frag");
-    shader= olol.Program;
+    
 
 
     inc = glGetUniformLocation(shader, "inc");

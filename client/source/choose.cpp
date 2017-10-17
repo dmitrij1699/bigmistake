@@ -18,7 +18,6 @@ GLuint Ltext(const char str[]);
 void choose::genBySize(float size){}
 
 void choose::genDefault(){
-    money=35;
     vertices.insert(vertices.end(),{
         -0.225, -1, //0
         -0.075, -1, //1
@@ -51,16 +50,22 @@ void choose::genDefault(){
     
 }
 
-choose::choose(double dtime, bool type):time(dtime){
+choose::choose(double dtime, bool type, double* x, double* y, int* state, GLuint W, GLuint H)
+    :time(dtime), pos_x(x), pos_y(y), state(state),WIDTH(W),HEIGHT(H) {
     if (type) {
+        price={3,5,2};
         typeT={5, 6, 7};
-    } else typeT={3, 4, 5};
+    } else {
+        typeT={2, 3, 4};
+        price={3,5,2};
+    }
+    cout<<"price[0]="<<price[0]<<endl;
     time0=time+31;
+    release=true;
+    money=35;
     genDefault();
     VAOvariables();
 
-
-    
 }
 
 void choose::drawVariables(){
@@ -77,7 +82,6 @@ void choose::drawVariables(){
 }
 
 void choose::textureSet(){
-    
     
     glUseProgram(shader); 
     glActiveTexture(GL_TEXTURE0);
@@ -102,8 +106,6 @@ void choose::textureSet(){
 
 void choose::VAOvariables(){
 
-    
-
     GLuint VBO[2], EBO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(2, VBO);
@@ -114,7 +116,6 @@ void choose::VAOvariables(){
 
     glBindBuffer(GL_ARRAY_BUFFER, position);
     glBufferData(GL_ARRAY_BUFFER,vertices.size()* sizeof(vertices), &vertices[0], GL_STATIC_DRAW);
-
 
     glBindBuffer(GL_ARRAY_BUFFER, text);
     glBufferData(GL_ARRAY_BUFFER,sizeof(this->text)*this->text.size(), &this->text[0], GL_STATIC_DRAW);
@@ -137,9 +138,20 @@ void choose::VAOvariables(){
 }
 
 void choose::draw(){
+    callback();
     time=time0-glfwGetTime();
     drawVariables();
     drawNum();
+}
+
+void choose::callback(){
+    if( *state==GLFW_PRESS && release){
+        release=false;
+        click();
+    } else
+    if( *state==GLFW_RELEASE ) {
+        release=true;
+    }
 }
 
 void choose::drawNum(){
@@ -151,6 +163,52 @@ void choose::drawNum(){
     num.drawNum( money- ( (int) money/10)*10, 0.05, 0.965, 0.0);
 }
 
+void choose::click(){
+    float x=(float) *pos_x/WIDTH;
+    x=x*2;
+    if( x<= 1 ){
+        x=1-x;
+        x=x*(-1);
+    } else {
+        x=x-1;
+    }
+    
+    float y=(float) *pos_y/HEIGHT;
+    y=y*2;
+    if( y>= 1 ){
+        y=y-1;
+        y=y*(-1);
+    } else {
+        y=1-y;
+    }
+    cout<<"HEIGHT="<<HEIGHT<<", WIDTH="<<WIDTH<< endl;
+    cout<<"x="<<x<<", y="<<y<< endl;
+    if( (y>=-1.0) && (y<=-0.85) )
+        if ( (x>=-0.225) && (x<=-0.075)){
+            buy(0);
+        } else {
+        if ( ( x>=-0.065 ) && ( x<=0.085 )){
+            buy(1);
+        } else {
+        if ( ( x>=0.095 ) && ( x<=0.245 )){
+            buy(2);
+        } }}
+}
+
+
+void choose::buy(int i){
+    cout<<"buy("<<i<<")"<<endl;
+    cout<<money<<"wtf??"<<endl;
+    cout<<"money="<<money<<endl;
+    cout<<"price[i]="<<price[i]<<endl;
+    cout<<( money  - price[i]) << endl;
+    if ( ( money  - price[i])>=0 ){
+        
+        money=( money  -price[i]);
+        cout<<"money="<<money<<endl;
+        choice.push_back(typeT[i]);
+    }
+}
 
 
 
