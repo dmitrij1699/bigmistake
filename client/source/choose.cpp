@@ -9,6 +9,8 @@
 #include <vector>
 #include "header/choose.h"
 #include "header/numbers.h"
+#include "header/objects.h"
+#include <algorithm>
 
 
 using namespace std;
@@ -50,18 +52,20 @@ void choose::genDefault(){
     
 }
 
-choose::choose(double dtime, bool type, double* x, double* y, int* state, GLuint W, GLuint H)
-    :time(dtime), pos_x(x), pos_y(y), state(state),WIDTH(W),HEIGHT(H) {
-    if (type) {
+choose::choose(double dtime, bool type, double* x, double* y, int* state, GLuint W, GLuint H, int *fields, int *process, int F_X, int F_Y)
+    :time(dtime), pos_x(x), pos_y(y), state(state),WIDTH(W),HEIGHT(H), typeA_D(type), process(process), fields(fields), F_X(F_X), F_Y(F_Y) {
+    OBJ=new objects(&fields[0],F_X, F_Y);
+    buy_proc=false;
+    if (typeA_D) {
         price={3,5,2};
         typeT={5, 6, 7};
     } else {
         typeT={2, 3, 4};
         price={3,5,2};
     }
+    release=true;
     cout<<"price[0]="<<price[0]<<endl;
     time0=time+31;
-    release=true;
     money=35;
     genDefault();
     VAOvariables();
@@ -140,18 +144,36 @@ void choose::VAOvariables(){
 void choose::draw(){
     callback();
     time=time0-glfwGetTime();
+    if (buy_proc==false || typeA_D){
+    OBJ->draw();
+    for(int i=0;i<coord_choice.size();i++) {
+        OBJ->drawSingle(choice[i],coord_choice[i] );
+    }
     drawVariables();
+    } else {
+        drawBuy();
+    }
     drawNum();
+    callback();
+    if(time<0 ) *process=2;
 }
 
 void choose::callback(){
-    if( *state==GLFW_PRESS && release){
-        release=false;
-        click();
-    } else
-    if( *state==GLFW_RELEASE ) {
-        release=true;
-    }
+
+        if( *state==GLFW_PRESS && release){
+            release=false;
+            if(buy_proc== false){
+                click();
+            } else {
+                if(  ( fields[F_X*F_Y-coord_choise-1]!=8) && (coord_choice.end()==find(coord_choice.begin(), coord_choice.end(), coord_choise) ) ){
+                    buy_proc=false;
+                    coord_choice.push_back(coord_choise);
+                }
+            }
+        } else
+        if( *state==GLFW_RELEASE ) {
+            release=true;
+        }
 }
 
 void choose::drawNum(){
@@ -196,6 +218,7 @@ void choose::click(){
 }
 
 
+
 void choose::buy(int i){
     cout<<"buy("<<i<<")"<<endl;
     cout<<money<<"wtf??"<<endl;
@@ -203,11 +226,41 @@ void choose::buy(int i){
     cout<<"price[i]="<<price[i]<<endl;
     cout<<( money  - price[i]) << endl;
     if ( ( money  - price[i])>=0 ){
-        
+        buy_proc=true;
         money=( money  -price[i]);
         cout<<"money="<<money<<endl;
         choice.push_back(typeT[i]);
     }
+}
+
+void choose::drawBuy(){
+    float x=(float) *pos_x/WIDTH;
+    x=x*2;
+    if( x<= 1 ){
+        x=1-x;
+        x=x*(-1);
+    } else {
+        x=x-1;
+    }
+    
+    float y=(float) *pos_y/HEIGHT;
+    y=y*2;
+    if( y>= 1 ){
+        y=y-1;
+        y=y*(-1);
+    } else {
+        y=1-y;
+    }
+
+    OBJ->draw();
+    for(int i=0;i<coord_choice.size();i++) {
+        OBJ->drawSingle(choice[i],coord_choice[i] );
+    }
+    for(int i=0;i<coord_choice.size();i++) {
+        OBJ->drawSingle(choice[i],coord_choice[i] );
+    }
+    coord_choise=OBJ->changeField(x, y, choice.back() );
+    
 }
 
 

@@ -21,6 +21,7 @@ private:
     void drawNumber(int);
     //void drawUnits(objects &,vector <int> &,unit , GLint, GLint );
     GLFWwindow* window;
+
     GLuint WIDTH, HEIGHT;
     int F_X, F_Y;
     vector<int> fields;

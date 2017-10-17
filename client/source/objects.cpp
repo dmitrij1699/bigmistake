@@ -8,6 +8,7 @@
 #include "libs/SOIL.h"
 #include "header/Shader.h"
 #include <vector>
+#include <cmath>
 
 using namespace std;
 
@@ -35,7 +36,6 @@ void objects::drawUnits(){
     glBindVertexArray(VAO);
     for(int i=0;i<N_X*N_Y;i++){
         glUniform2f(inc, VecX[i], VecY[i] );
-            cout<<"fields["<<i<<"]=" <<fields[N_X*N_Y-i-1]<<endl;
         glUniform1i(type, fields[N_X*N_Y-i-1]);
         glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT, 0 );
         
@@ -43,7 +43,9 @@ void objects::drawUnits(){
     glBindVertexArray(0);
 }
 
-void objects::in(int y, int x){
+
+objects::objects(int *fields ,int y, int x){
+    this->fields=fields;
     N_X=(x); 
     N_Y=(y);
 
@@ -81,10 +83,6 @@ void objects::in(int y, int x){
     }
 }
 
-objects::objects(int *fields){
-    this->fields=fields;
-}
-
 
 
 void objects::defv(){
@@ -108,8 +106,6 @@ void objects::defv(){
 }
 
 
-
-
 void objects::defVAO(){
     Shader ourShader("../source/shaders/object.vs", "../source/shaders/object.frag");
     shader_obj= ourShader.Program;
@@ -123,16 +119,6 @@ void objects::defVAO(){
         1.0f, 1.0f, // 2
         0.0f, 1.0f // 3
     };
-
-    cout.precision(3); 
-    cout.setf(ios::fixed);
-
-    for(int i=0; i<default_vec.size(); ++i)
-    std::cout <<"default_vec["<<i<<"]"<< default_vec[i] <<endl<< ' ';
-
-    for(int i=0; i<indices.size(); ++i)
-    std::cout << "indices["<<i<<"]" << indices[i]<< endl<<' ';
-
     
 
     GLuint VBO[2];
@@ -263,6 +249,30 @@ void objects::bindTexture(){
     glUniform1i(glGetUniformLocation(shader_obj, "road"), 8);
 }
 
+
+
+int objects::changeField(float x, float y, int n){
+    float diff=2;
+    int k=0;
+    for(int i=0; i<N_X*N_Y;i++){
+        if ( ( fabs(VecX[i]-x)*fabs(VecX[i]-x)+fabs(VecY[i]-y)*fabs(VecY[i]-y) ) <diff){
+            k=i;
+            diff=( fabs(VecX[i]-x)*fabs(VecX[i]-x)+fabs(VecY[i]-y)*fabs(VecY[i]-y) );
+        }
+    }
+    drawSingle(n,k);
+    return k;
+}
+
+void objects::drawSingle(int n, int k){ //n-тип ячейки, k-номер
+    glUseProgram(shader_obj);
+    bindTexture();
+    glBindVertexArray(VAO);
+    glUniform2f(inc, VecX[k], VecY[k] );
+    glUniform1i(type, n);
+    glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT, 0 );
+    glBindVertexArray(0);
+}
 // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 float objects::getVecX(int number){

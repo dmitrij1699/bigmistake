@@ -129,22 +129,16 @@ void engine::drawMenu(menu main_menu){
 
 
 void engine::drawCircle(){
+    int process=1;
     int state=0;
-    double xpos, ypos;
-    cout << "Старт отрисовки..." << endl;
-    objects OBJ(&fields[0]);
-    OBJ.in(F_X, F_Y);
-    double time;
+    double xpos, ypos,time;
+    vector<int> coord_choice;
+    vector<int> choice;
     time=glfwGetTime();
-    menu main_menu;
-    vector<int> strI {0,1,0, 1};
-    main_menu.addNewItem(strI);
-    main_menu.addNewItem(strI);
-    //vector <int> attack={5, 5, 5, 6, 6,7};
-    //unit units(fields, attack, OBJ, F_X, F_Y, time);
 
-    choose wow(time, false, &xpos, &ypos, &state, WIDTH,HEIGHT );
-    cout<<"HEIGHT="<<HEIGHT<<", WIDTH="<<WIDTH<< endl;
+    choose wow(time, false, &xpos, &ypos, &state, WIDTH,HEIGHT, &fields[0] , &process, F_X, F_Y );
+
+   
 
     while (!glfwWindowShouldClose(window)) {
 
@@ -154,17 +148,20 @@ void engine::drawCircle(){
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        OBJ.draw();
-        //drawFields(OBJ, inc, type);
-        //drawLines(OBJ);
-        //drawNumber(1);
-        //drawMenu(main_menu);
-        //time=glfwGetTime();
-        //units.calc(time);
-        //drawUnits(OBJ, attack, units,inc, type);
-
-        wow.draw();
-
+        switch (process) {
+            case 0:
+                //отрисовка меню
+                break;
+            case 1:
+                wow.draw();
+                if( process==2) {
+                    //nope
+                }
+                break;
+            case 2:
+                //отрисовка симуляции
+                break;
+        }
         glfwPollEvents();
         
         glfwSwapBuffers(window);

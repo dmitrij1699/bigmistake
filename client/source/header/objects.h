@@ -30,12 +30,14 @@ private:
     void drawLines();
     void texture_use();
     void bindTexture();
+    
 public:
     //           objects(int X,int Y):N_X(X), N_Y(Y){};
-    objects(int *);
+    objects(int *fields, int x, int y);
 
+    void drawSingle(int, int);
+    int changeField(float, float, int);
     void draw();
-    void in(int x, int y);
     int getN_X();
     int getN_Y();
     int getCount(){return 1;};
