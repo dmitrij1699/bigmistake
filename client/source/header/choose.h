@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "numbers.h"
 using namespace std;
 
 class choose{
@@ -20,8 +21,8 @@ public:
     choose(double);              //получает на вход временя старта.
     void genDefault();
     void genBySize(float); //принимает размер интерфейса
-    int buy(double, double); //проверяет покупку. тригеррится при щелчке мыши. возвращает номер покупки.
-    
+    int buy(double, double){}; //проверяет покупку. тригеррится при щелчке мыши. возвращает номер покупки.
+    void draw();
 };
 
 #endif

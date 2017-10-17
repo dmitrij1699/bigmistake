@@ -13,6 +13,7 @@
 #include "header/numbers.h"
 #include "header/unit.h"
 #include "header/menu.h"
+#include "header/choose.h"
 #include <string>
 
 #include "libs/glm/gtc/type_ptr.hpp"
@@ -162,7 +163,7 @@ void engine::drawLines(objects OBJ){
 void engine::drawNumber(int x){
     glUseProgram(NumberSH);
     numbers num;
-    glBindVertexArray(num.VAO_num(x));
+    //glBindVertexArray(num.VAO_num(x));
     int calc=0;
     switch(x){
         case 1:
@@ -186,8 +187,8 @@ void engine::drawNumber(int x){
             calc=5;
             break;
     }
-    glDrawElements(GL_LINES, calc*2, GL_UNSIGNED_INT,0 );
-    glBindVertexArray(0);
+   // glDrawElements(GL_LINES, calc*2, GL_UNSIGNED_INT,0 );
+    //glBindVertexArray(0);
 }
 
 void engine::drawMenu(menu main_menu){
@@ -229,6 +230,8 @@ void engine::drawCircle(){
     //vector <int> attack={5, 5, 5, 6, 6,7};
     //unit units(fields, attack, OBJ, F_X, F_Y, time);
 
+    choose wow(time);
+
     GLint inc = glGetUniformLocation(SHprog, "inc");
     GLint type = glGetUniformLocation(SHprog, "typeT");
     while (!glfwWindowShouldClose(window)) {
@@ -237,10 +240,12 @@ void engine::drawCircle(){
         //drawFields(OBJ, inc, type);
         //drawLines(OBJ);
         //drawNumber(1);
-        drawMenu(main_menu);
+        //drawMenu(main_menu);
         //time=glfwGetTime();
         //units.calc(time);
         //drawUnits(OBJ, attack, units,inc, type);
+
+        wow.draw();
 
         glfwPollEvents();
         
