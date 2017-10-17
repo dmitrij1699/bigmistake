@@ -52,13 +52,6 @@ void choose::genDefault(){
     
 }
 
-<<<<<<< HEAD
-void choose::draw(){
-    
-}
-
-choose::choose(double dtime):time(dtime){
-=======
 choose::choose(double dtime, bool type, double* x, double* y, int* state, GLuint W, GLuint H, int *fields, int *process, int F_X, int F_Y)
     :time(dtime), pos_x(x), pos_y(y), state(state),WIDTH(W),HEIGHT(H), typeA_D(type), process(process), fields(fields), F_X(F_X), F_Y(F_Y) {
     OBJ=new objects(&fields[0],F_X, F_Y);
@@ -74,7 +67,6 @@ choose::choose(double dtime, bool type, double* x, double* y, int* state, GLuint
     cout<<"price[0]="<<price[0]<<endl;
     time0=time+31;
     money=35;
->>>>>>> planB
     genDefault();
     VAOvariables();
 

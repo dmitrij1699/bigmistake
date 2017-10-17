@@ -14,6 +14,10 @@
         "hash_map": "cpp",
         "hash_set": "cpp",
         "cmath": "cpp",
+<<<<<<< HEAD
         "sstream": "cpp"
+=======
+        "string": "cpp"
+>>>>>>> planB
     }
 }

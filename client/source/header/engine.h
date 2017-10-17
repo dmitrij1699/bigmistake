@@ -16,19 +16,12 @@ private:
     void glfwInic();    //Инициализация glfw
     void glewInic();    //Инициализация glew
     void chErr();       // проверка ошибок средствами OpenGL
-    void shaderInic();  //Загрузка в SHprog шейдера
-    void textureUse();  //Загрузка текстур
-    void drawRoutine(); 
     void drawCircle();
-    void drawFields(objects, GLint, GLint);
-    void drawLines(objects);
     void drawMenu(menu);
     void drawNumber(int);
-    void drawUnits(objects &,vector <int> &,unit , GLint, GLint );
-    //uint *fields;
-    GLuint SHprog,LineSH, NumberSH;
+    //void drawUnits(objects &,vector <int> &,unit , GLint, GLint );
     GLFWwindow* window;
-    GLuint dirt, grass, archer, catapult, crossbow, knight,peasant, ram, road ;
+
     GLuint WIDTH, HEIGHT;
     int F_X, F_Y;
     vector<int> fields;
@@ -40,7 +33,6 @@ public:
     void convert(double, double);
     static void curs_callback(GLFWwindow* , double , double );
     static void callback(GLFWwindow* , int , int , int , int );
-    //void draw();
 
 };
 

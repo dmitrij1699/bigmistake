@@ -7,12 +7,20 @@
 #include "Shader.h"
 #include <vector>
 
+using namespace std;
+
+
 class numbers {
 private:
-    std::vector<GLfloat> vertices;
+    void VAO_num(int);
+    vector<GLfloat> vertices;
+    GLuint shader, VAO;
+    GLint inc,size;
+    vector <int> num;   //кол-во отрисовок для той или иной цифры(только нужно *2)
 public:
     numbers();
-    GLuint VAO_num(int);
+    
+    void drawNum(int, float,float, float);    //число, size, pos_x, pos_y (центр слева)
 };
 
 #endif
