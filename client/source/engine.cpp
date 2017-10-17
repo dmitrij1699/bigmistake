@@ -230,7 +230,7 @@ void engine::drawCircle(){
     //vector <int> attack={5, 5, 5, 6, 6,7};
     //unit units(fields, attack, OBJ, F_X, F_Y, time);
 
-    choose wow(time);
+    choose wow(time, true);
 
     GLint inc = glGetUniformLocation(SHprog, "inc");
     GLint type = glGetUniformLocation(SHprog, "typeT");

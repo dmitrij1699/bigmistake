@@ -12,17 +12,29 @@ using namespace std;
 
 class choose{
 private:
-    vector<float> vertices;
+    void drawNum();
+    void drawVariables();
+    void VAOvariables();
+    void textureSet();
+
+    vector<float> vertices, text;
     vector<GLuint> indices;
-    double time;
+    GLuint VAO, shader, type, inc;
+
+    vector<int> typeT;
+
+    GLuint archer,catapult,crossbow,knight,peasant, ram;
+
+    double time, time0;
     unsigned int money;         //доступные деньги
     vector<int> choice;         //вектор, в который скидываем "покупки"
 public:
-    choose(double);              //получает на вход временя старта.
+    choose(double, bool);              //получает на вход временя старта.
     void genDefault();
     void genBySize(float); //принимает размер интерфейса
     int buy(double, double){}; //проверяет покупку. тригеррится при щелчке мыши. возвращает номер покупки.
     void draw();
+
 };
 
 #endif

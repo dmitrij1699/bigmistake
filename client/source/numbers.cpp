@@ -127,14 +127,6 @@ void numbers::VAO_num(int x){
        
         }
 
-        for(int i=0; i<indices.size(); i++){
-            cout<< indices[i];
-        } 
-        cout<<endl;
-        for(int i=0; i<vertices.size(); i++){
-            cout<< vertices[i];
-        }
-        cout<<endl;
     
 
     Shader olol("../source/shaders/number.vs", "../source/shaders/number.frag");
