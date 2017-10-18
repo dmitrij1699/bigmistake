@@ -99,9 +99,9 @@ void objects::defv(){
     default_vec[7]=size_y/2;
 
     text.size();
-    indices = {  
-        0, 1, 2, 
-        1, 2, 3
+    indices = { 
+        1, 2, 3,
+        1, 0, 2
     };
 }
 
@@ -114,10 +114,12 @@ void objects::defVAO(){
 
 
     float texture[] = {
+        
         0.0f, 0.0f, // 0
         1.0f, 0.0f, // 1
-        1.0f, 1.0f, // 2
-        0.0f, 1.0f // 3
+        0.0f, 1.0f, // 2
+        1.0f, 1.0f // 3
+        
     };
     
 

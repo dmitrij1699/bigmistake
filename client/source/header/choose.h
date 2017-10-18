@@ -53,6 +53,7 @@ public:
     void genBySize(float); //принимает размер интерфейса
     void buy(int); //проверяет покупку. тригеррится при щелчке мыши. возвращает номер покупки.
     void draw();
+    void getDefence(int *, int *);
 
 
 

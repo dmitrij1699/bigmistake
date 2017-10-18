@@ -29,7 +29,7 @@ protected:
     bool empty; //"чиcтота 0 клетки"
     double empty_time; //сколько времени "0" клетка была пустой
 public:
-    unit(vector<int>,vector<int>,vector<int>, int, int, double); //fields/attack/OBJ/F_X/F_Y/ time
+    void in(vector<int>,vector<int>,vector<int>, int, int, double); //fields/attack/OBJ/F_X/F_Y/ time
     void ifDanger(float, float);     //проверка получения дамага юнитом->вызов getDamage. координата юнита X/координата юнита Y. 
     void getDamage(bool, int, int){};  //получение дамага юнитом. время/ номер юнита /номер башни
     void getDamage(int, int){};  //получение дамага юнитом. номер юнита /номер башни

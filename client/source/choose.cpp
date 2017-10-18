@@ -263,6 +263,14 @@ void choose::drawBuy(){
     
 }
 
-
+void choose::getDefence(int *vec, int *size){
+    vector<int> newbee;
+    for(int i=0; i<choice.size();i++){
+        newbee.push_back(coord_choice[i]);
+        newbee.push_back(choice[i]);
+    }
+    *size=newbee.size();
+    vec[]=newbee;
+}
 
 #endif

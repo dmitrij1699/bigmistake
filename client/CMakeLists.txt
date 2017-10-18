@@ -20,9 +20,9 @@ set(SOURCE "source/main.cpp"
 
 add_executable(bigmistake ${SOURCE})
 
-#set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_BUILD_TYPE Debug)
 
-add_definitions(-std=c++11 -Wall -DGLEW_STATIC)
+add_definitions(-std=c++11 -g -Wall -DGLEW_STATIC)
 
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)

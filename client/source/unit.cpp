@@ -35,6 +35,7 @@ void unit::move(){
         cout<<"un["<<i<<"].pos=" <<un[i].pos<<endl;
     }
 
+    
 }
 
 void unit::default_value(){
@@ -76,8 +77,13 @@ void unit::road(){
         cout<<"roadV["<<i<<"]="<<roadV[i]<<endl;
 }
 
-unit::unit(vector<int> fields_in,vector<int> attack_in,vector<int> defence_in, int F_X, int F_Y, double time)
-:fields(fields_in),attack(attack_in),   F_X(F_X), F_Y(F_Y), old_time(time),defence(defence_in) {
+void unit::in(vector<int> fields_in,vector<int> attack_in,vector<int> defence_in, int F_X, int F_Y, double time){
+        fields=fields_in;
+        attack=attack_in;   
+        F_X=F_X; 
+        F_Y=F_Y; 
+        old_time=time;
+        defence=defence_in; 
         OBJ=new objects(&fields[0],F_X, F_Y);
         empty=true;
         cout<< "!!!!!!empty="<<empty;

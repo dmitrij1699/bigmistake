@@ -27,7 +27,7 @@ GLuint Ltext(const char str[]);
 
 void engine::glfwInic(){
     glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); //ну или 4 :)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
@@ -35,9 +35,10 @@ void engine::glfwInic(){
    
 
     window = glfwCreateWindow(WIDTH, HEIGHT, "bigmistake", nullptr, nullptr);
+    glfwMakeContextCurrent(window); 
     glfwSetKeyCallback(window, &engine::callback); 
     glfwSetCursorPosCallback(window, &engine::curs_callback);
-    glfwMakeContextCurrent(window); 
+    
     chErr();
 }
 
@@ -131,20 +132,21 @@ void engine::drawMenu(menu main_menu){
 
 
 void engine::drawCircle(){
-    int process=2;
+    int process=1;
     int state=0;
-    double xpos, ypos,time;
+    double xpos, yos,time;
     vector<int> coord_choice;
     vector<int> choice;
     time=glfwGetTime();
+    int size=0;
 
     choose wow(time, false, &xpos, &ypos, &state, WIDTH,HEIGHT, &fields[0] , &process, F_X, F_Y );
 
     vector<int> defence {2,3,3,10};  //Башня, номер клетки.
     vector<int> attack {5,6,7,5,5,6,7};
-    unit newUnit(fields,attack, defence,F_X, F_Y,time );
+    unit newUnit;
 
-    while (!glfwWindowShouldClose(window)) {
+    while (!glfwWindowShouldClose(window)) { //ГЛАВНЫЙ ЦИКЛ
         time=glfwGetTime();
 
         glfwGetCursorPos(window, &xpos, &ypos);
@@ -160,7 +162,9 @@ void engine::drawCircle(){
             case 1:
                 wow.draw();
                 if( process==2) {
-                    unit newUnit(fields,attack, defence,F_X, F_Y,time );
+                    wow.getDefence(&defence[0], &size);
+                    newUnit.in(fields,attack , wow.getDefence(), F_X, F_Y,time );
+                    
                 }
                 break;
             case 2:
