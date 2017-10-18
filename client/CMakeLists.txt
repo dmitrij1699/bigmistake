@@ -15,7 +15,8 @@ set(SOURCE "source/main.cpp"
     "source/unit.cpp" 
     "source/menu.cpp"
     "source/bukavki.cpp"
-    "source/choose.cpp" )
+    "source/choose.cpp"
+    "source/connect.cpp" )
 
 add_executable(bigmistake ${SOURCE})
 

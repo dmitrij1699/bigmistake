@@ -35,6 +35,7 @@ public:
     //           objects(int X,int Y):N_X(X), N_Y(Y){};
     objects(int *fields, int x, int y);
 
+    void drawUnit(float, float, int);
     void drawSingle(int, int);
     int changeField(float, float, int);
     void draw();

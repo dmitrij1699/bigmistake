@@ -6,15 +6,22 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <cstdlib>
+#include <vector>
+#include <string>
 
-#define port 7650
 
-class connect {
+
+class call{
 private:
     int sock;
+    struct sockaddr_in stSockAddr;
     
+
 public:
-    connect();
+    
+    call();
+    void send();
+    void revieve();
 };
 
 #endif

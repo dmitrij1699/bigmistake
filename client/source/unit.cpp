@@ -9,26 +9,25 @@
 
 //5-knight  6-pleasant 7-ram
 
-
-
 void unit::move(){
     int gag=un.size()-1;
-    
+    cout<< roadV.size() <<"LOL"<< endl;
     for(int i=0;i<(int) un.size()-gag;i++)
-     {
-        if((int) un[i].pos>=(int) roadV.size()){
+    {
+        if((int) un[i].pos>=((int) roadV.size()-1)){
+            cout<< "WTF???"<< un[i].pos<<" "<<roadV.size()-1<<endl;
             un[i].pos=-2;
             gag--;
         } else
-        if ( fabs(un[i].pos+1)==0) un[i].pos=0;
+        if ( un[i].pos==-1) un[i].pos=0;
         else
-        if ( fabs(un[i].pos+2)!=0) un[i].pos+= (float) un[i].speed*dtime;
+        if ( un[i].pos!= -2) un[i].pos+= (float) un[i].speed*dtime;
         else
-        if((int) un[i].pos>=(int) roadV.size()){
+        if( un[i].pos>=(int) roadV.size()) {
             un[i].pos=-2;
             gag--;
         }
-        if (un[i].pos>=1 || fabs(un[i].pos+2)==0) 
+        if (un[i].pos>=1 || un[i].pos==-2) 
             gag--;
     }
     
@@ -40,7 +39,7 @@ void unit::move(){
 
 void unit::default_value(){
     
-    float def_speed=1.7; //вдруг потом скорость передавать через "более ранние" классы?
+    float def_speed=1.5; //вдруг потом скорость передавать через "более ранние" классы?
     for(int i=0; i<attack.size();i++){
         un.push_back(par_str());
         switch (attack[i]){
@@ -64,8 +63,6 @@ void unit::default_value(){
 
 }
 
-
-
 void unit::road(){
     cout<< endl<< endl;
     for(int y=0; y<F_Y;y++)
@@ -79,8 +76,9 @@ void unit::road(){
         cout<<"roadV["<<i<<"]="<<roadV[i]<<endl;
 }
 
-unit::unit(vector<int> fields_in,vector<int> attack_in,objects  OBJ_in, int F_X, int F_Y, double time)
-:fields(fields_in),attack(attack_in),  OBJ(OBJ_in), F_X(F_X), F_Y(F_Y), old_time(time) {
+unit::unit(vector<int> fields_in,vector<int> attack_in,vector<int> defence_in, int F_X, int F_Y, double time)
+:fields(fields_in),attack(attack_in),   F_X(F_X), F_Y(F_Y), old_time(time),defence(defence_in) {
+        OBJ=new objects(&fields[0],F_X, F_Y);
         empty=true;
         cout<< "!!!!!!empty="<<empty;
         default_value(); //Заполняет UN из attack
@@ -105,13 +103,12 @@ int unit::convert(int num){
     return F_X*F_Y-num-1;
 }
 
-
 float unit::getVecX(int num){  
     int g=(int) un[num].pos;
     float drobn=(float) un[num].pos-g;
-    cout<<endl<<"xx"<< (int) un[num].pos << un[num].pos <<"WOW"<< endl;;
-    cout << "vecX("<<num<<")=" <<OBJ.getVecX( convert( roadV[g+1] ) )-OBJ.getVecX( convert( roadV[g] ) )<< endl;
-    return ( OBJ.getVecX( convert( roadV[g] ) )+ drobn*( OBJ.getVecX( convert( roadV[g+1] ) )-OBJ.getVecX( convert( roadV[g] ) ) ) );
+    cout<<endl<<"xx"<< (int) un[num].pos << un[num].pos <<"WOW"<<"num"<<num<< endl;
+    cout << "vecX("<<num<<")=" <<OBJ->getVecX( convert( roadV[g+1] ) )-OBJ->getVecX( convert( roadV[g] ) )<< endl;
+    return ( OBJ->getVecX( convert( roadV[g] ) )+ drobn*( OBJ->getVecX( convert( roadV[g+1] ) )-OBJ->getVecX( convert( roadV[g] ) ) ) );
 }
 
 int unit::ch(int i){
@@ -127,14 +124,38 @@ int unit::ch(int i){
 }
 
 float unit::getVecY(int num){   
-    int g=(int) un[num].pos;
+    int g=(int) un[num].pos;  
     float drobn=(float) un[num].pos-g;
     //g=g+F_X*(F_Y-)
-    cout << " vecY("<<num<<")=" <<OBJ.getVecY( convert( roadV[g+1] ) )-OBJ.getVecY( convert( roadV[g] ) )<<endl;
-    return    (OBJ.getVecY( convert( roadV[g] ) )+ drobn*( OBJ.getVecY( convert( roadV[g+1] ) )-OBJ.getVecY( convert( roadV[g] ) ) ) );
+    cout<< "num="<<endl;
+    cout << " vecY("<<num<<")=" <<OBJ->getVecY( convert( roadV[g+1] ) )-OBJ->getVecY( convert( roadV[g] ) )<<endl;
+    return    (OBJ->getVecY( convert( roadV[g] ) )+ drobn*( OBJ->getVecY( convert( roadV[g+1] ) )-OBJ->getVecY( convert( roadV[g] ) ) ) );
 
 }
 
+void unit::draw(){
+    OBJ->draw();
+    for(int i=0;i<attack.size();i++){
+        if((int) un[i].pos>=0  && un[i].pos<(int) (roadV.size()-1) )
+            OBJ->drawUnit(getVecX(i),getVecY(i), attack[i]);
+    }
+    for(int i=0;i<defence.size()/2;i++){
+        OBJ->drawSingle(defence[i*2],defence[i*2+1]);
+    }
+    
+    /*glUseProgram(shader); 
+    glBindVertexArray(OBJ->getVAO());
+    for(int i=0;i<attack.size();i++){
+        cout<< "отрисовка "<<i<<"-го объекта"<< endl;
+        if(ch(i)==1) {
+        cout<< "прошел проверку "<<i<<"-ый объект"<< endl;
+        glUniform2f(inc, getVecX(i), getVecY(i) );
+        glUniform1i(type,attack[i]);
+        glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT, 0 );
+        }
+    }
+    glBindVertexArray(0);*/
+}
 
 
 //Методы для тестов(инициализация)

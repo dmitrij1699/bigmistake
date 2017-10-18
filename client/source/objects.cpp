@@ -273,6 +273,18 @@ void objects::drawSingle(int n, int k){ //n-тип ячейки, k-номер
     glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT, 0 );
     glBindVertexArray(0);
 }
+
+
+void objects::drawUnit(float x, float y, int n){ //n-тип ячейки, k-номер
+    glUseProgram(shader_obj);
+    bindTexture();
+    glBindVertexArray(VAO);
+    glUniform2f(inc, x, y );
+    glUniform1i(type, n);
+    glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT, 0 );
+    glBindVertexArray(0);
+}
+
 // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 float objects::getVecX(int number){

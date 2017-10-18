@@ -6,6 +6,7 @@
 
 #define port 7650
 
+
 int main(){
     struct sockaddr_in stSockAddr;
     int i= socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);

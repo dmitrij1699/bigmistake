@@ -14,6 +14,7 @@
 #include "header/unit.h"
 #include "header/menu.h"
 #include "header/choose.h"
+#include "header/connect.h"
 #include <string>
 
 #include "libs/glm/gtc/type_ptr.hpp"
@@ -130,7 +131,7 @@ void engine::drawMenu(menu main_menu){
 
 
 void engine::drawCircle(){
-    int process=1;
+    int process=2;
     int state=0;
     double xpos, ypos,time;
     vector<int> coord_choice;
@@ -139,9 +140,12 @@ void engine::drawCircle(){
 
     choose wow(time, false, &xpos, &ypos, &state, WIDTH,HEIGHT, &fields[0] , &process, F_X, F_Y );
 
-   
+    vector<int> defence {2,3,3,10};  //Башня, номер клетки.
+    vector<int> attack {5,6,7,5,5,6,7};
+    unit newUnit(fields,attack, defence,F_X, F_Y,time );
 
     while (!glfwWindowShouldClose(window)) {
+        time=glfwGetTime();
 
         glfwGetCursorPos(window, &xpos, &ypos);
         state = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
@@ -156,11 +160,12 @@ void engine::drawCircle(){
             case 1:
                 wow.draw();
                 if( process==2) {
-                    //nope
+                    unit newUnit(fields,attack, defence,F_X, F_Y,time );
                 }
                 break;
             case 2:
-                //отрисовка симуляции
+                newUnit.calc(time);
+                newUnit.draw();
                 break;
         }
         glfwPollEvents();
