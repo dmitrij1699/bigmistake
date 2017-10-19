@@ -65,7 +65,7 @@ choose::choose(double dtime, bool type, double* x, double* y, int* state, GLuint
     }
     release=true;
     cout<<"price[0]="<<price[0]<<endl;
-    time0=time+31;
+    time0=time+11;
     money=35;
     genDefault();
     VAOvariables();
@@ -248,7 +248,7 @@ void choose::drawBuy(){
     if( y>= 1 ){
         y=y-1;
         y=y*(-1);
-    } else {
+    } else  {
         y=1-y;
     }
 
@@ -263,14 +263,12 @@ void choose::drawBuy(){
     
 }
 
-void choose::getDefence(int *vec, int *size){
-    vector<int> newbee;
+void choose::getDefence(vector<int> *vec){
     for(int i=0; i<choice.size();i++){
-        newbee.push_back(coord_choice[i]);
-        newbee.push_back(choice[i]);
+        vec->push_back(choice[i]);
+        vec->push_back(coord_choice[i]);
+        
     }
-    *size=newbee.size();
-    vec[]=newbee;
 }
 
 #endif

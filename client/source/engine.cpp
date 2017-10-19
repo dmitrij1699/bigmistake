@@ -139,10 +139,11 @@ void engine::drawCircle(){
     vector<int> choice;
     time=glfwGetTime();
     int size=0;
+    vector<int> sfields=fields;
+    choose wow(time, false, &xpos, &ypos, &state, WIDTH,HEIGHT, &sfields[0] , &process, F_X, F_Y );
 
-    choose wow(time, false, &xpos, &ypos, &state, WIDTH,HEIGHT, &fields[0] , &process, F_X, F_Y );
-
-    vector<int> defence {2,3,3,10};  //Башня, номер клетки.
+    //vector<int> defence {2,3,3,10};  //Башня, номер клетки.
+    vector<int> defence;
     vector<int> attack {5,6,7,5,5,6,7};
     unit newUnit;
 
@@ -162,8 +163,8 @@ void engine::drawCircle(){
             case 1:
                 wow.draw();
                 if( process==2) {
-                    wow.getDefence(&defence[0], &size);
-                    newUnit.in(fields,attack , wow.getDefence(), F_X, F_Y,time );
+                    wow.getDefence(&defence);
+                    newUnit.in(fields,attack , &defence, F_X, F_Y,time );
                     
                 }
                 break;

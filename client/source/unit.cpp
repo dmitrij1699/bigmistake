@@ -34,6 +34,7 @@ void unit::move(){
     for(int i=0;i<(int) un.size();i++){
         cout<<"un["<<i<<"].pos=" <<un[i].pos<<endl;
     }
+    
 
     
 }
@@ -65,7 +66,10 @@ void unit::default_value(){
 }
 
 void unit::road(){
-    cout<< endl<< endl;
+    cout<< endl<<fields.size()<< endl;
+    for(int i=0;i<fields.size();i++){
+        cout<< fields[i]<<endl;
+    }
     for(int y=0; y<F_Y;y++)
         for(int x=0; x<F_X;x++){
             if( nf(x,y)==8){
@@ -75,15 +79,18 @@ void unit::road(){
         }
     for(int i=0; i<roadV.size();i++)
         cout<<"roadV["<<i<<"]="<<roadV[i]<<endl;
+
+
 }
 
-void unit::in(vector<int> fields_in,vector<int> attack_in,vector<int> defence_in, int F_X, int F_Y, double time){
+void unit::in(vector<int> fields_in,vector<int> attack_in,vector<int> *defence_in, int F_X, int F_Y, double time){
         fields=fields_in;
         attack=attack_in;   
-        F_X=F_X; 
-        F_Y=F_Y; 
+        this->F_X=F_X; 
+        this->F_Y=F_Y; 
         old_time=time;
         defence=defence_in; 
+
         OBJ=new objects(&fields[0],F_X, F_Y);
         empty=true;
         cout<< "!!!!!!empty="<<empty;
@@ -145,8 +152,8 @@ void unit::draw(){
         if((int) un[i].pos>=0  && un[i].pos<(int) (roadV.size()-1) )
             OBJ->drawUnit(getVecX(i),getVecY(i), attack[i]);
     }
-    for(int i=0;i<defence.size()/2;i++){
-        OBJ->drawSingle(defence[i*2],defence[i*2+1]);
+    for(int i=0;defence->size()-i*2>0;i++){
+        OBJ->drawSingle(defence->at(i*2),defence->at(i*2+1));
     }
     
     /*glUseProgram(shader); 
