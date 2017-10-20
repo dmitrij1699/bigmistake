@@ -313,4 +313,12 @@ int objects::getN_X(){
     return N_X;
 }
 
+float objects::getSize_y(){
+    return size_y;
+}
+
+float objects::getSize_x(){
+    return size_x;
+}
+
 #endif

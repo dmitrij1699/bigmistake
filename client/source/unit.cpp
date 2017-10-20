@@ -8,6 +8,7 @@
 #include <cmath>
 
 //5-knight  6-pleasant 7-ram
+unit::unit(int *proc): process(proc) {};
 
 void unit::move(){
     int gag=un.size()-1;
@@ -42,45 +43,66 @@ void unit::move(){
 void unit::default_value(){
     
     float def_speed=1.5; //вдруг потом скорость передавать через "более ранние" классы?
+    float def_heath=20;
     for(int i=0; i<attack.size();i++){
         un.push_back(par_str());
         switch (attack[i]){
-            case 5: 
+            case 5: //рыцарь
             un[i].speed=(float) def_speed*0.80;
-            un[i].health=15;
+            un[i].health=15*def_heath;
             break;
-            case 6:
+            case 6: //крестьяне
             un[i].speed=(float) def_speed*1;
-            un[i].health=10;
+            un[i].health=10*def_heath;
             break;
-            case 7:
+            case 7: //таран
             un[i].speed=(float) def_speed*0.45;
-            un[i].health=28;
+            un[i].health=28*def_heath;
             break;
         }
         un[i].pos=-1;
-
+        cout<<"!!!!un["<<i<<"]="<<un[i].health<<endl;
     }
     un[0].pos=0.0;
+
+    float def_damage=5;
+    float def_dps=1;
+    float def_rad=5;
+    for(int i=0; defence->size()-i*2>0;i++){
+        def.push_back(def_str());
+        switch (defence->at(i*2)){
+            case 2: //лучник
+            def[i].damage=(float) def_damage*0.4;
+            def[i].dps=(float) def_dps*1;
+            def[i].rad=(float) def_rad*0.5;
+            break;
+            case 3: //катапульта
+            def[i].damage=(float) def_damage*1;
+            def[i].dps=(float) def_dps*0.3;
+            def[i].rad=(float) def_rad*1;
+            break;
+            case 4: //арбалетчик
+            def[i].damage=(float) def_damage*0.7;
+            def[i].dps=(float) def_dps*0.7;
+            def[i].rad=(float) def_rad*0.6;
+            break;
+        }
+        def[i].last_trig=def[i].rad;
+    }
+    default_health.push_back(15*def_heath); //5 -0
+    default_health.push_back(10*def_heath); //6 -1
+    default_health.push_back(28*def_heath); //7 -2
 
 }
 
 void unit::road(){
-    cout<< endl<<fields.size()<< endl;
-    for(int i=0;i<fields.size();i++){
-        cout<< fields[i]<<endl;
-    }
+
     for(int y=0; y<F_Y;y++)
         for(int x=0; x<F_X;x++){
             if( nf(x,y)==8){
                 roadV.push_back( F_X*y+(F_X-x-1) );
             }
-            cout<< endl;
         }
-    for(int i=0; i<roadV.size();i++)
-        cout<<"roadV["<<i<<"]="<<roadV[i]<<endl;
-
-
 }
 
 void unit::in(vector<int> fields_in,vector<int> attack_in,vector<int> *defence_in, int F_X, int F_Y, double time){
@@ -93,23 +115,22 @@ void unit::in(vector<int> fields_in,vector<int> attack_in,vector<int> *defence_i
 
         OBJ=new objects(&fields[0],F_X, F_Y);
         empty=true;
-        cout<< "!!!!!!empty="<<empty;
         default_value(); //Заполняет UN из attack
         road();          //Заполняет length
 
 }
 
 int unit::nf(int X, int Y){
-    cout<<"x="<<X<<", y="<<Y<<", NN="<<fields[F_X*Y+(F_X-X-1)]<< endl;
     return ( fields[F_X*Y+(F_X-X-1)] );
 }
 
 void unit::calc(double in_time){
     time=in_time;
     dtime=time-old_time;
-    //getDamage();
     move();
+    getDamage();
     old_time=time;
+    
 }
 
 int unit::convert(int num){
@@ -119,18 +140,13 @@ int unit::convert(int num){
 float unit::getVecX(int num){  
     int g=(int) un[num].pos;
     float drobn=(float) un[num].pos-g;
-    cout<<endl<<"xx"<< (int) un[num].pos << un[num].pos <<"WOW"<<"num"<<num<< endl;
-    cout << "vecX("<<num<<")=" <<OBJ->getVecX( convert( roadV[g+1] ) )-OBJ->getVecX( convert( roadV[g] ) )<< endl;
     return ( OBJ->getVecX( convert( roadV[g] ) )+ drobn*( OBJ->getVecX( convert( roadV[g+1] ) )-OBJ->getVecX( convert( roadV[g] ) ) ) );
 }
 
 int unit::ch(int i){
 
-        cout<<"!!un["<<i<<"].pos=" <<un[i].pos<<endl;
     
     if ( un[i].pos<0 ) {
-        cout<< un[i].pos-roadV.size() << " ;;"<< fabs(un[i].pos-roadV.size()) << ";;;"<< roadV.size()<< endl;
-        cout<< "un[i]=!!!!!"<< un[i].pos <<endl;
         return 0;
     }
     else return 1;
@@ -139,37 +155,49 @@ int unit::ch(int i){
 float unit::getVecY(int num){   
     int g=(int) un[num].pos;  
     float drobn=(float) un[num].pos-g;
-    //g=g+F_X*(F_Y-)
-    cout<< "num="<<endl;
-    cout << " vecY("<<num<<")=" <<OBJ->getVecY( convert( roadV[g+1] ) )-OBJ->getVecY( convert( roadV[g] ) )<<endl;
     return    (OBJ->getVecY( convert( roadV[g] ) )+ drobn*( OBJ->getVecY( convert( roadV[g+1] ) )-OBJ->getVecY( convert( roadV[g] ) ) ) );
-
 }
 
 void unit::draw(){
     OBJ->draw();
     for(int i=0;i<attack.size();i++){
-        if((int) un[i].pos>=0  && un[i].pos<(int) (roadV.size()-1) )
+        if((int) un[i].pos>=0  && un[i].pos<(int) (roadV.size()-1) && un[i].health>0)
             OBJ->drawUnit(getVecX(i),getVecY(i), attack[i]);
+            drawHealthbar(i);
     }
     for(int i=0;defence->size()-i*2>0;i++){
         OBJ->drawSingle(defence->at(i*2),defence->at(i*2+1));
     }
-    
-    /*glUseProgram(shader); 
-    glBindVertexArray(OBJ->getVAO());
-    for(int i=0;i<attack.size();i++){
-        cout<< "отрисовка "<<i<<"-го объекта"<< endl;
-        if(ch(i)==1) {
-        cout<< "прошел проверку "<<i<<"-ый объект"<< endl;
-        glUniform2f(inc, getVecX(i), getVecY(i) );
-        glUniform1i(type,attack[i]);
-        glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT, 0 );
-        }
-    }
-    glBindVertexArray(0);*/
+
 }
 
+void unit::drawHealthbar(int num){
+    hb.in(getVecX(num),getVecY(num), OBJ->getSize_x(),OBJ->getSize_y(),un[i].health*100/default_health(attack(num)+5  ) );
+
+}
+
+void unit::getDamage(){
+    float x,y;
+    live =0; 
+    pos_win=0;
+    for(int i=0;i<un.size();i++){
+        x=getVecX(i);
+        y=getVecY(i);
+        for(int k=0;defence->size()-k*2>0;k++){
+            float len=pow(x-OBJ->getVecX(defence->at(k*2+1)),2)+pow(y-OBJ->getVecY(defence->at(k*2+1)),2);
+            //cout<<len<<" k="<<k<<" rad="<<def[k].rad<<" last="<<def[k].last_trig<<endl;
+            if( len<=def[k].rad && def[k].dps<=time-def[k].last_trig && un[i].health>0){
+                def[k].last_trig=time;
+                un[i].health=un[i].health-def[k].damage;
+            }
+        }
+        cout<<"un["<<i<<"]="<<un[i].health<<endl;
+        if ( un[i].pos==-1 ) pos_win++;
+        if ( un[i].health<=0 ) live++;
+    }
+    if (live==un.size()) *process=3;
+    if ( pos_win==un.size()) *process=4;
+}
 
 //Методы для тестов(инициализация)
 void unit::testMove(){};

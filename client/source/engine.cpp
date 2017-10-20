@@ -80,72 +80,40 @@ engine::engine(GLuint WIDTH,GLuint HEIGHT,int F_X,int F_Y,vector<int> fields): F
 
 
 
-void engine::drawNumber(int x){
-    numbers num;
-    //glBindVertexArray(num.VAO_num(x));
-    int calc=0;
-    switch(x){
-        case 1:
-        case 7:
-            calc=2;
-            break;
-        case 4:
-            calc=3;
-            break;
-        
-        case 3:
-        case 0:
-            calc=4;
-            break;
-        
-        case 2:
-        case 5:
-        case 6:
-        case 8:
-        case 9:
-            calc=5;
-            break;
-    }
-   // glDrawElements(GL_LINES, calc*2, GL_UNSIGNED_INT,0 );
-    //glBindVertexArray(0);
-}
 
 void engine::drawMenu(menu main_menu){
     main_menu.draw();
 }
 
-/*void engine::drawUnits(objects &OBJ, vector <int> & attack, unit units,GLint inc,GLint type){
-    
-    glUseProgram(SHprog); 
-    glBindVertexArray(OBJ.getVAO());
-    for(int i=0;i<attack.size();i++){
-        cout<< "отрисовка "<<i<<"-го объекта"<< endl;
-        if(units.ch(i)==1) {
-        cout<< "прошел проверку "<<i<<"-ый объект"<< endl;
-        glUniform2f(inc,units.getVecX(i), units.getVecY(i) );
-        glUniform1i(type,attack[i]);
-        glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT, 0 );
-        }
-    }
-    glBindVertexArray(0);
-}*/
+
 
 
 void engine::drawCircle(){
     int process=1;
-    int state=0;
-    double xpos, yos,time;
+    int state=0;    //мыша
+    double xpos, ypos,time;
     vector<int> coord_choice;
     vector<int> choice;
     time=glfwGetTime();
-    int size=0;
     vector<int> sfields=fields;
     choose wow(time, false, &xpos, &ypos, &state, WIDTH,HEIGHT, &sfields[0] , &process, F_X, F_Y );
 
     //vector<int> defence {2,3,3,10};  //Башня, номер клетки.
+
+    menu main_menu;
+
+    vector<int> s0={0,1,1,0,0};
+    main_menu.addNewItem(s0);
+
+ 
+    main_menu.addNewItem(s0);
+
+   
+    main_menu.addNewItem(s0);
+
     vector<int> defence;
-    vector<int> attack {5,6,7,5,5,6,7};
-    unit newUnit;
+    vector<int> attack {5,5,5,6,6,6,7};
+    unit newUnit(&process);
 
     while (!glfwWindowShouldClose(window)) { //ГЛАВНЫЙ ЦИКЛ
         time=glfwGetTime();
@@ -158,7 +126,7 @@ void engine::drawCircle(){
 
         switch (process) {
             case 0:
-                //отрисовка меню
+                main_menu.draw();
                 break;
             case 1:
                 wow.draw();
@@ -169,8 +137,16 @@ void engine::drawCircle(){
                 }
                 break;
             case 2:
-                newUnit.calc(time);
+                newUnit.calc(time); //3- выйгрыш защиты. 4-выйгрыш атаки
                 newUnit.draw();
+                break;
+            case 3:
+                cout<<"3"<<endl;
+                exit(3);
+                break;
+            case 4:
+                cout<<"4"<<endl;
+                exit(4);
                 break;
         }
         glfwPollEvents();
@@ -191,10 +167,7 @@ void engine::curs_callback(GLFWwindow* window, double xpos_in, double ypos_in){
     //cout<<"xpos="<<xpos_in<<", ypos="<<ypos_in<<endl;
 }
 
-void engine::convert(double xpos_in, double ypos_in){
-    xpos=xpos_in;
-    ypos=ypos_in;
-}
+
 
 
 #endif

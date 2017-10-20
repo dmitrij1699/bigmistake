@@ -153,7 +153,7 @@ void menu::drawWords(){
     
     for(int i=0; i<strI.size(); i++){
         float coef=fabs(-coord[i*8+5]-coord[i*8+1]);
-        bukavki bb( strMas[i] ,coef/2*0.3, -0.75 , (-coord[i*8+5]-coord[i*8+1] ) /2);
+        bukavki bb( strMas[i] ,coef/2*0.3, -0.75, (-coord[i*8+5]-coord[i*8+1] ) /2);
         bb.setVAO();
         bb.draw();
     }

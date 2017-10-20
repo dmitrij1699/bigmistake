@@ -18,19 +18,17 @@ private:
     void chErr();       // проверка ошибок средствами OpenGL
     void drawCircle();
     void drawMenu(menu);
-    void drawNumber(int);
-    //void drawUnits(objects &,vector <int> &,unit , GLint, GLint );
+
     GLFWwindow* window;
 
     GLuint WIDTH, HEIGHT;
     int F_X, F_Y;
     vector<int> fields;
-    double time;
-    double xpos,  ypos;
+
 public:
     engine(const GLuint,const GLuint,const int,const int,  vector<int> );
 
-    void convert(double, double);
+
     static void curs_callback(GLFWwindow* , double , double );
     static void callback(GLFWwindow* , int , int , int , int );
 
