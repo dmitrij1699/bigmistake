@@ -4,6 +4,7 @@
 #include <vector>
 #include "header/objects.h"
 #include "header/unit.h"
+#include "header/healthbar.h"
 #include <iostream>
 #include <cmath>
 
@@ -44,7 +45,7 @@ void unit::default_value(){
     
     float def_speed=1.5; //вдруг потом скорость передавать через "более ранние" классы?
     float def_heath=20;
-    for(int i=0; i<attack.size();i++){
+    for(unsigned int i=0; i<attack.size();i++){
         un.push_back(par_str());
         switch (attack[i]){
             case 5: //рыцарь
@@ -67,7 +68,7 @@ void unit::default_value(){
 
     float def_damage=5;
     float def_dps=1;
-    float def_rad=5;
+    float def_rad=1.4;
     for(int i=0; defence->size()-i*2>0;i++){
         def.push_back(def_str());
         switch (defence->at(i*2)){
@@ -114,6 +115,7 @@ void unit::in(vector<int> fields_in,vector<int> attack_in,vector<int> *defence_i
         defence=defence_in; 
 
         OBJ=new objects(&fields[0],F_X, F_Y);
+        hb=new healthbar(OBJ->getSize_x(),OBJ->getSize_y());
         empty=true;
         default_value(); //Заполняет UN из attack
         road();          //Заполняет length
@@ -160,19 +162,21 @@ float unit::getVecY(int num){
 
 void unit::draw(){
     OBJ->draw();
-    for(int i=0;i<attack.size();i++){
-        if((int) un[i].pos>=0  && un[i].pos<(int) (roadV.size()-1) && un[i].health>0)
-            OBJ->drawUnit(getVecX(i),getVecY(i), attack[i]);
-            drawHealthbar(i);
-    }
     for(int i=0;defence->size()-i*2>0;i++){
         OBJ->drawSingle(defence->at(i*2),defence->at(i*2+1));
     }
+    for(unsigned int i=0;i<attack.size();i++){
+        if((int) un[i].pos>=0  && un[i].pos<(int) (roadV.size()-1) && un[i].health>0){
+                OBJ->drawUnit(getVecX(i),getVecY(i), attack[i]);
+                drawHealthbar(i);
+        }
+    }
+    
 
 }
 
 void unit::drawHealthbar(int num){
-    hb.in(getVecX(num),getVecY(num), OBJ->getSize_x(),OBJ->getSize_y(),un[i].health*100/default_health(attack(num)+5  ) );
+    hb->in(getVecX(num), getVecY(num), un[num].health/default_health[attack[num]-5 ] );
 
 }
 
@@ -180,7 +184,7 @@ void unit::getDamage(){
     float x,y;
     live =0; 
     pos_win=0;
-    for(int i=0;i<un.size();i++){
+    for(unsigned int i=0;i<un.size();i++){
         x=getVecX(i);
         y=getVecY(i);
         for(int k=0;defence->size()-k*2>0;k++){
@@ -195,8 +199,8 @@ void unit::getDamage(){
         if ( un[i].pos==-1 ) pos_win++;
         if ( un[i].health<=0 ) live++;
     }
-    if (live==un.size()) *process=3;
-    if ( pos_win==un.size()) *process=4;
+    if (  live==un.size()) *process=3;
+    if (  pos_win==un.size()) *process=4;
 }
 
 //Методы для тестов(инициализация)

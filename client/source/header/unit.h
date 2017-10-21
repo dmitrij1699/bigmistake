@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "objects.h"
+#include "healthbar.h"
 
 using namespace std;
 
@@ -37,6 +38,7 @@ protected:
     int F_X, F_Y;
     double old_time,time, dtime;                                                                                                          
     vector<int> attack, *defence;
+    healthbar *hb;
     objects *OBJ;
     vector<float> roadX, roadY;
     vector<int> roadV;
@@ -60,6 +62,7 @@ public:
     int ch(int);
     int convert(int);
     void draw();
+    void drawHealthbar(int);
     
     
     //Методы для тестов(инициализация)

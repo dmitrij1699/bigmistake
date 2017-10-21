@@ -11,9 +11,13 @@ using namespace std;
 class healthbar{
 private:
     float x, y, size_x, size_y, health;
+    GLuint shader, VAO, resize, move, color;
 
 public:
-    void in(float, float, float, float, float); // x, y, size_x, size_y, %health
+    healthbar(float, float);
+    void defVAO();
+    void draw();
+    void in(float, float, float); // x, y, size_x, size_y, %health
 };
 
 

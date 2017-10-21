@@ -19,9 +19,8 @@
 using namespace glm;
 using namespace std;
 
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
-GLuint buffersIn();
-GLuint Ltext(const char str[]); 
+
+
 const int F_X=10;
 const int F_Y=10;
 
@@ -63,10 +62,20 @@ GLuint VAO;
 int main()
 {
 
-    
-    
-    engine start(WIDTH, HEIGHT, F_X, F_Y,  fields);
-    
+    for(int i=0;i<10; i++){
+        fields.clear();
+        srand( time(0) );
+        int x=4 + rand() % 96;
+        srand( time(0) );
+        int y=4 + rand() % 96;
+        fields.resize(x*y);
+        for(int i=0; i<y; i++){
+            for(int g=0; g<x; g++){
+
+            }
+        }
+        engine start(WIDTH, HEIGHT, F_X, F_Y,  fields);
+    }
 
     return 0;
 }
