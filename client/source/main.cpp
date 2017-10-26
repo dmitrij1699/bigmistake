@@ -59,17 +59,18 @@ const GLuint WIDTH = 1280, HEIGHT = 720;
             1, 1, 1, 1, 0, 1, 1, 1, 1, 1  //9
         };
 
+
 void randFields(){
     int g;
     int X_I=0;
     int Y_I=0;    
     fields.clear();
     srand( time(0)+11 );
-    int x=4 + rand() % 21;
+    int x=15 + rand() % 6;
     srand( time(0)+12 );
-    int y=4 + rand() % 21;
-    x=10;
+    int y=14 + rand() % 6;
     y=10;
+    x=y;
     fields.resize(x*y);
     for(int i=0;i<x*y;i++){
         srand( time(0)+g-x );
@@ -78,22 +79,21 @@ void randFields(){
         } else fields[i]=1;
     }
     srand( time(0) );
-    g=4+rand() % (x-4);
-    cout <<g<< "first"<< endl ;
+    g=4+rand() % (x-6);
+
     fields[g]=8;
     X_I=x-g;
-    cout<< X_I<<endl<<endl;
+
     int kk=0;
     while( X_I<x && Y_I<y){
         srand( time(0)+g-Y_I );
-        kk=(rand() % 2);
-        if (kk==0 ) {
-            if (g-1>=x*y) break;
+        kk=( rand() % 1000);
+        if (kk>500  ) {
             X_I++; //влево
             g=g-1;
             
             fields[g]=8;
-            cout<<"0//g="<<g<<" X_I="<<X_I<<endl;
+    
             
         } else {
             if (g+x >= x*y) break;
@@ -102,42 +102,19 @@ void randFields(){
             g=g+x;
             
             fields[g]=8;
-            cout<<"1//g="<<g<<" Y_I="<<Y_I<<endl;
+  
         }
         
     }
-    cout<<"X="<< x<< " Y="<<y<<endl;
-    for (int i=0; i<y; i++){
-        cout<<i<<" ";
-    } 
-    cout<<endl;
-    for (int i=0; i<y; i++){
-        for(int g=0; g<x; g++){
-            cout<<fields[g+x*i]<<" ";
-        }
-        cout<<" //"<<i <<endl;
-    }
-    cout<<endl;
-    cout<<endl;
-    for (int i=0; i<y; i++){
-        for(int g=0; g<x; g++){
-            cout<<g+x*i<<" ";
-        }
-        cout<<" //"<<i <<endl;
-    }
+
+
     while (Y_I>=y && X_I<=x ) {
             g=g-1;
-            cout<<"g-i=" <<g-1<<endl;
             fields[g]=8;
             X_I++;        
     }
 
-    for (int i=0; i<y; i++){
-        for(int g=0; g<x; g++){
-            cout<<fields[g+x*i]<<" ";
-        }
-        cout<<" //"<<i <<endl;
-    }
+
     F_X=x;
     F_Y=y;
     //exit(1);

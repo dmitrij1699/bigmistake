@@ -31,17 +31,12 @@ void unit::move(){
             gag--;
     }
     
-    for(int i=0;i<(int) un.size();i++){
-        //cout<<"un["<<i<<"].pos=" <<un[i].pos<<endl;
-    }
-    
-
     
 }
 
 void unit::default_value(){
     
-    float def_speed=1.5; //вдруг потом скорость передавать через "более ранние" классы?
+    float def_speed=(float) 15/F_X; //вдруг потом скорость передавать через "более ранние" классы?
     float def_heath=20;
     for(unsigned int i=0; i<attack.size();i++){
         un.push_back(par_str());
@@ -60,13 +55,12 @@ void unit::default_value(){
             break;
         }
         un[i].pos=-1;
-        cout<<"!!!!un["<<i<<"]="<<un[i].health<<endl;
     }
     un[0].pos=0.0;
 
     float def_damage=5;
     float def_dps=1;
-    float def_rad=1.4;
+    float def_rad=( (float) 2/F_X)*1.5  ;
     for(int i=0; defence->size()-i*2>0;i++){
         def.push_back(def_str());
         switch (defence->at(i*2)){
@@ -76,9 +70,9 @@ void unit::default_value(){
             def[i].rad=(float) def_rad*0.5;
             break;
             case 3: //катапульта
-            def[i].damage=(float) def_damage*1;
-            def[i].dps=(float) def_dps*0.3;
-            def[i].rad=(float) def_rad*1;
+            def[i].damage=(float) def_damage*1.3;
+            def[i].dps=(float) def_dps*0.2;
+            def[i].rad=(float) def_rad*2;
             break;
             case 4: //арбалетчик
             def[i].damage=(float) def_damage*0.7;
@@ -86,6 +80,7 @@ void unit::default_value(){
             def[i].rad=(float) def_rad*0.6;
             break;
         }
+        def[i].zac=-1;
         def[i].last_trig=def[i].rad;
     }
     default_health.push_back(15*def_heath); //5 -0
@@ -163,7 +158,6 @@ void unit::draw(){
     }
     for(unsigned int i=0;i<attack.size();i++){
         if( un[i].pos>=0  && (int) un[i].pos< (roadV.size()-1) && un[i].health>0){
-                cout<< roadV.size()-1 << "xxx"<< un[i].pos<< endl;
                 OBJ->drawUnit(getVecX(i),getVecY(i), attack[i]);
                 drawHealthbar(i);
         }
@@ -172,7 +166,6 @@ void unit::draw(){
         }
     }
     
-
 }
 
 void unit::drawHealthbar(int num){
@@ -184,18 +177,31 @@ void unit::getDamage(){
     float x,y;
     live =0; 
     pos_win=0;
-    for(unsigned int i=0;i<un.size();i++){
-        x=getVecX(i);
-        y=getVecY(i);
-        for(int k=0;defence->size()-k*2>0;k++){
-            float len=pow(x-OBJ->getVecX(defence->at(k*2+1)),2)+pow(y-OBJ->getVecY(defence->at(k*2+1)),2);
-            //cout<<len<<" k="<<k<<" rad="<<def[k].rad<<" last="<<def[k].last_trig<<endl;
-            if(un[i].pos>=0 && len<=def[k].rad && def[k].dps<=time-def[k].last_trig && un[i].health>0){
-                def[k].last_trig=time;
-                un[i].health=un[i].health-def[k].damage;
+
+    for(int i=0; i<def.size();i++){
+        if (def[i].zac!=-1){
+                if( un[ def[i].zac ].health<=0 ){
+                    def[i].zac=-1;
+                }
+        }
+    }
+
+    for(unsigned int i=0;i<un.size()  ;i++){
+        if (un[i].pos>=0 && un[i].health>0 && un[i].pos< (roadV.size()-1) ){
+            x=getVecX(i);
+            y=getVecY(i);
+            for(int k=0;defence->size()-k*2>0;k++){
+
+                float len=pow(x-OBJ->getVecX(defence->at(k*2+1)),2)+pow(y-OBJ->getVecY(defence->at(k*2+1)),2);
+                if(un[i].pos>=0 && len<=def[k].rad && def[k].dps<=time-def[k].last_trig && un[i].health>0 && (def[k].zac==k || def[k].zac==-1 ) ){
+                    def[k].zac=k;
+                    def[k].last_trig=time;
+                    //cout<<"k="<<k<<" rad="<<def[k].rad<<" len="<<len<<endl;
+                    un[i].health=un[i].health-def[k].damage;
+                }
+        
             }
         }
-        cout<<"un["<<i<<"]="<<un[i].health<<endl;
         if ( un[i].pos==-2 ) pos_win++;
         if ( un[i].health<0 ) live++;
     }

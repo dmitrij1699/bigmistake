@@ -47,6 +47,8 @@ protected:
 };
 
 
+
+
 TEST_F(objTest, getCount) {
   EXPECT_EQ(1,q0.getCount());
   EXPECT_EQ(4,q1.getCount());

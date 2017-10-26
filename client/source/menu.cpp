@@ -46,12 +46,7 @@ void menu::addNewItem(string str_in){
         }
     }
 
-    for(int i=0; i<coord.size(); i++){
-        cout<< "coord["<<i<<"]="<<fixed<<coord[i]<<endl;
-    }
-    for(int i=0; i<indices.size(); i++){
-        cout<< "indices["<<i<<"]="<<fixed<<indices[i]<<endl;
-    }
+ 
 
     createVAO();
 }
@@ -68,7 +63,7 @@ void menu::addNewItem(vector<int> str_in){
                         0.75,   0.75, //2
                         -0.75,  0.75} ); //3
         indices.insert(indices.end(), {0,1,2, 0,2,3});
-        cout<<"STR.SIZE"<<strI.size()<< endl;
+    
         float part=(float) 6*strI.size()+(strI.size()-1);  // 6/6-сам объект, 1/6-растояние между ними
         float diff_y=1.5/part;
         coord[5]=-0.75+6*diff_y;
@@ -94,12 +89,7 @@ void menu::addNewItem(vector<int> str_in){
         }
     
 
-    for(int i=0; i<coord.size(); i++){
-        cout<< "coord["<<i<<"]="<<fixed<<coord[i]<<endl;
-    }
-    for(int i=0; i<indices.size(); i++){
-        cout<< "indices["<<i<<"]="<<fixed<<indices[i]<<endl;
-    }
+
 
     createVAO();
 }
@@ -108,7 +98,7 @@ void menu::createVAO(){
 
 
 
-    cout<<"Загрузка шейдерной програмы MENU..."<<endl;
+
     Shader olol("../source/shaders/menu.vs", "../source/shaders/menu.frag");
     shader= olol.Program;
 

@@ -35,9 +35,9 @@ void objects::drawUnits(){
     bindTexture();
     glBindVertexArray(VAO);
     for(int i=0;i<N_X*N_Y;i++){
-        glUniform2f(inc, VecX[i], VecY[i] );
-        glUniform1i(type, fields[N_X*N_Y-i-1]);
-        glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT, 0 );
+            glUniform2f(inc, VecX[i], VecY[i] );
+            glUniform1i(type, fields[N_X*N_Y-i-1]);
+            glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT, 0 );
         
     }
     glBindVertexArray(0);
@@ -46,8 +46,8 @@ void objects::drawUnits(){
 
 objects::objects(int *fields ,int y, int x){
     this->fields=fields;
-    N_X=(x); 
-    N_Y=(y);
+    N_X=x; 
+    N_Y=y;
 
     
 
@@ -66,7 +66,7 @@ objects::objects(int *fields ,int y, int x){
 
     defVAOline();
 
-
+    float waat;
 
 
 
@@ -79,7 +79,14 @@ objects::objects(int *fields ,int y, int x){
 
             VecY[j+i*x]=def_y+size_y*i;
         }
-                 
+        /*for(int g=0;g<x/2;g++){
+            waat=VecX[g+i*x];
+            VecX[g+i*x]=VecX[(i+1)*x-g];
+            VecX[(i+1)*x-g]=waat;
+            waat=VecY[g+i*x];
+            VecY[g+i*x]=VecY[(i+1)*x-g];
+            VecY[(i+1)*x-g]=waat;
+        }*/
     }
 }
 
@@ -214,7 +221,6 @@ void objects::texture_use(){
     peasant= Ltext("../Textures/attack/peasant.png");
     ram= Ltext("../Textures/attack/ram.png");
     road= Ltext("../Textures/road.png");
-    cout<< "Текстуры загружены" <<endl;
 
   
     

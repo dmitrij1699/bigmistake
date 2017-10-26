@@ -66,13 +66,13 @@ void engine::chErr(){
 
 
 engine::engine(GLuint WIDTH,GLuint HEIGHT,int F_X,int F_Y,vector<int> fields): F_X(F_X), F_Y(F_Y),WIDTH(WIDTH), HEIGHT(HEIGHT), fields(fields)  {
-    cout << "Старт инициализации..." << endl;
+
     glfwInic(); //Инициализация glfw
     glewInic(); //Инициализация glew
  
     
     glViewport(0, 0, WIDTH, HEIGHT);
-    cout << "Инициализация прошла успешно" << endl;
+
 
     drawCircle();
 
@@ -112,7 +112,7 @@ void engine::drawCircle(){
     main_menu.addNewItem(s0);
 
     vector<int> defence;
-    vector<int> attack {5,5,5,6,6,6,7};
+    vector<int> attack {6,6,6,5,5,5,7};
     unit newUnit(&process);
 
     while (!glfwWindowShouldClose(window)) { //ГЛАВНЫЙ ЦИКЛ

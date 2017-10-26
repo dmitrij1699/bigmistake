@@ -18,6 +18,7 @@ protected:
     };
 
     struct def_str{
+        int zac;          // к кому прицепилась башня
         float damage;       //дамаг
         float pos;          //позиция
         float dps;          //кд выстрела

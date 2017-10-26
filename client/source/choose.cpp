@@ -64,8 +64,7 @@ choose::choose(double dtime, bool type, double* x, double* y, int* state, GLuint
         price={3,5,2};
     }
     release=true;
-    cout<<"price[0]="<<price[0]<<endl;
-    time0=time+10;
+    time0=time+30;
     money=35;
     genDefault();
     VAOvariables();
@@ -203,8 +202,7 @@ void choose::click(){
     } else {
         y=1-y;
     }
-    cout<<"HEIGHT="<<HEIGHT<<", WIDTH="<<WIDTH<< endl;
-    cout<<"x="<<x<<", y="<<y<< endl;
+
     if( (y>=-1.0) && (y<=-0.85) )
         if ( (x>=-0.225) && (x<=-0.075)){
             buy(0);
@@ -220,15 +218,11 @@ void choose::click(){
 
 
 void choose::buy(int i){
-    cout<<"buy("<<i<<")"<<endl;
-    cout<<money<<"wtf??"<<endl;
-    cout<<"money="<<money<<endl;
-    cout<<"price[i]="<<price[i]<<endl;
-    cout<<( money  - price[i]) << endl;
+
     if ( ( money  - price[i])>=0 ){
         buy_proc=true;
         money=( money  -price[i]);
-        cout<<"money="<<money<<endl;
+
         choice.push_back(typeT[i]);
     }
 }
