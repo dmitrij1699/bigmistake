@@ -22,13 +22,13 @@ private:
     GLFWwindow* window;
 
     GLuint WIDTH, HEIGHT;
-    int F_X, F_Y;
+    int F_X, F_Y, process;
     vector<int> fields;
 
 public:
     engine(const GLuint,const GLuint,const int,const int,  vector<int> );
 
-
+    int getProc();
     static void curs_callback(GLFWwindow* , double , double );
     static void callback(GLFWwindow* , int , int , int , int );
 

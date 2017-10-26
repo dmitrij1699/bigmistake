@@ -9,6 +9,7 @@
 #include "header/engine.h"
 #include <clocale>
 #include <locale>
+#include <time.h>   
 
 
 #include "libs/glm/vector_relational.hpp"
@@ -21,8 +22,8 @@ using namespace std;
 
 
 
-const int F_X=10;
-const int F_Y=10;
+ int F_X=10;
+ int F_Y=10;
 
 
 /*int mfields[F_X][F_Y]={
@@ -58,23 +59,56 @@ const GLuint WIDTH = 1280, HEIGHT = 720;
             1, 1, 1, 1, 0, 1, 1, 1, 1, 1  //9
         };
 
-GLuint VAO;
+void randFields(){
+    int g;
+    int X_I=0;
+    int Y_I=0;    
+    fields.clear();
+    srand( time(0) );
+    int x=4 + rand() % 46;
+    srand( time(0) );
+    int y=4 + rand() % 46;
+    fields.resize(x*y);
+    for(int i=0;i<x*y;i++){
+        srand( time(0) );
+        if ( (rand() % 2)==0){
+            fields[i]=0;
+        } else fields[i]=1;
+    }
+    srand( time(0) );
+    fields[3+rand() % (x-3)]=8;
+    g=3+rand() % (x-3);
+    while( X_I<x && Y_I<y){
+        srand( time(0) );
+        if ((rand() % 2)==0 ) {
+            X_I++; //влево
+            g=g-1;
+            fields[g]=8;
+            
+        } else {
+            Y_I++; //вниз
+            g=g+x;
+            fields[g]=8;
+        }
+    }
+    if(Y_I>=y && X_I<x ) {
+        for (int i=1; X_I<x;i++){
+            fields[g-i]=8;
+            X_I++;        
+        }
+    }
+    F_X=x;
+    F_Y=y;
+}
+
+
+
 int main()
 {
 
-    for(int i=0;i<10; i++){
-        fields.clear();
-        srand( time(0) );
-        int x=4 + rand() % 96;
-        srand( time(0) );
-        int y=4 + rand() % 96;
-        fields.resize(x*y);
-        for(int i=0; i<y; i++){
-            for(int g=0; g<x; g++){
-
-            }
-        }
-        engine start(WIDTH, HEIGHT, F_X, F_Y,  fields);
+    engine start(WIDTH, HEIGHT, F_X, F_Y,  fields);
+    if( start.getProc()==3) {
+        engine second(WIDTH, HEIGHT, F_X, F_Y,  fields);
     }
 
     return 0;

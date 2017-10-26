@@ -65,7 +65,7 @@ choose::choose(double dtime, bool type, double* x, double* y, int* state, GLuint
     }
     release=true;
     cout<<"price[0]="<<price[0]<<endl;
-    time0=time+11;
+    time0=time+10;
     money=35;
     genDefault();
     VAOvariables();

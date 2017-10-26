@@ -14,7 +14,7 @@ unit::unit(int *proc): process(proc) {};
 void unit::move(){
     int gag=un.size()-1;
     cout<< roadV.size() <<"LOL"<< endl;
-    for(int i=0;i<(int) un.size()-gag;i++)
+    for(int i=0;(i<(int) un.size()-gag) ;i++)
     {
         if((int) un[i].pos>=((int) roadV.size()-1)){
             cout<< "WTF???"<< un[i].pos<<" "<<roadV.size()-1<<endl;
@@ -146,8 +146,6 @@ float unit::getVecX(int num){
 }
 
 int unit::ch(int i){
-
-    
     if ( un[i].pos<0 ) {
         return 0;
     }
@@ -166,7 +164,7 @@ void unit::draw(){
         OBJ->drawSingle(defence->at(i*2),defence->at(i*2+1));
     }
     for(unsigned int i=0;i<attack.size();i++){
-        if((int) un[i].pos>=0  && un[i].pos<(int) (roadV.size()-1) && un[i].health>0){
+        if( un[i].pos>=0  && (int) un[i].pos< (roadV.size()) && un[i].health>0){
                 OBJ->drawUnit(getVecX(i),getVecY(i), attack[i]);
                 drawHealthbar(i);
         }
@@ -190,14 +188,14 @@ void unit::getDamage(){
         for(int k=0;defence->size()-k*2>0;k++){
             float len=pow(x-OBJ->getVecX(defence->at(k*2+1)),2)+pow(y-OBJ->getVecY(defence->at(k*2+1)),2);
             //cout<<len<<" k="<<k<<" rad="<<def[k].rad<<" last="<<def[k].last_trig<<endl;
-            if( len<=def[k].rad && def[k].dps<=time-def[k].last_trig && un[i].health>0){
+            if(un[i].pos>=0 && len<=def[k].rad && def[k].dps<=time-def[k].last_trig && un[i].health>0){
                 def[k].last_trig=time;
                 un[i].health=un[i].health-def[k].damage;
             }
         }
         cout<<"un["<<i<<"]="<<un[i].health<<endl;
-        if ( un[i].pos==-1 ) pos_win++;
-        if ( un[i].health<=0 ) live++;
+        if ( un[i].pos==-2 ) pos_win++;
+        if ( un[i].health<0 ) live++;
     }
     if (  live==un.size()) *process=3;
     if (  pos_win==un.size()) *process=4;

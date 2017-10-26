@@ -7,7 +7,6 @@
 
 using namespace std;
 
-
 class unit{
 protected:
     GLuint shader, inc,type;

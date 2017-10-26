@@ -89,7 +89,7 @@ void engine::drawMenu(menu main_menu){
 
 
 void engine::drawCircle(){
-    int process=1;
+    process=1;
     int state=0;    //мыша
     double xpos, ypos,time;
     vector<int> coord_choice;
@@ -142,7 +142,6 @@ void engine::drawCircle(){
                 break;
             case 3:
                 cout<<"3"<<endl;
-                exit(3);
                 break;
             case 4:
                 cout<<"4"<<endl;
@@ -152,9 +151,16 @@ void engine::drawCircle(){
         glfwPollEvents();
         
         glfwSwapBuffers(window);
+        if ( process==3 || process==4 ){
+            
+            break;
+        }
     }
 }
 
+int engine::getProc(){
+    return process;
+}
 
 void engine::callback(GLFWwindow* window, int key, int scancode, int action, int mode){
         if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
