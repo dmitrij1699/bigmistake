@@ -64,52 +64,92 @@ void randFields(){
     int X_I=0;
     int Y_I=0;    
     fields.clear();
-    srand( time(0) );
-    int x=4 + rand() % 46;
-    srand( time(0) );
-    int y=4 + rand() % 46;
+    srand( time(0)+11 );
+    int x=4 + rand() % 21;
+    srand( time(0)+12 );
+    int y=4 + rand() % 21;
+    x=10;
+    y=10;
     fields.resize(x*y);
     for(int i=0;i<x*y;i++){
-        srand( time(0) );
+        srand( time(0)+g-x );
         if ( (rand() % 2)==0){
             fields[i]=0;
         } else fields[i]=1;
     }
     srand( time(0) );
-    fields[3+rand() % (x-3)]=8;
-    g=3+rand() % (x-3);
+    g=4+rand() % (x-4);
+    cout <<g<< "first"<< endl ;
+    fields[g]=8;
+    X_I=x-g;
+    cout<< X_I<<endl<<endl;
+    int kk=0;
     while( X_I<x && Y_I<y){
-        srand( time(0) );
-        if ((rand() % 2)==0 ) {
+        srand( time(0)+g-Y_I );
+        kk=(rand() % 2);
+        if (kk==0 ) {
+            if (g-1>=x*y) break;
             X_I++; //влево
             g=g-1;
+            
             fields[g]=8;
+            cout<<"0//g="<<g<<" X_I="<<X_I<<endl;
             
         } else {
+            if (g+x >= x*y) break;
             Y_I++; //вниз
+            
             g=g+x;
+            
             fields[g]=8;
+            cout<<"1//g="<<g<<" Y_I="<<Y_I<<endl;
         }
+        
     }
-    if(Y_I>=y && X_I<x ) {
-        for (int i=1; X_I<x;i++){
-            fields[g-i]=8;
-            X_I++;        
+    cout<<"X="<< x<< " Y="<<y<<endl;
+    for (int i=0; i<y; i++){
+        cout<<i<<" ";
+    } 
+    cout<<endl;
+    for (int i=0; i<y; i++){
+        for(int g=0; g<x; g++){
+            cout<<fields[g+x*i]<<" ";
         }
+        cout<<" //"<<i <<endl;
+    }
+    cout<<endl;
+    cout<<endl;
+    for (int i=0; i<y; i++){
+        for(int g=0; g<x; g++){
+            cout<<g+x*i<<" ";
+        }
+        cout<<" //"<<i <<endl;
+    }
+    while (Y_I>=y && X_I<=x ) {
+            g=g-1;
+            cout<<"g-i=" <<g-1<<endl;
+            fields[g]=8;
+            X_I++;        
+    }
+
+    for (int i=0; i<y; i++){
+        for(int g=0; g<x; g++){
+            cout<<fields[g+x*i]<<" ";
+        }
+        cout<<" //"<<i <<endl;
     }
     F_X=x;
     F_Y=y;
+    //exit(1);
 }
 
 
 
 int main()
 {
-
+    randFields();
     engine start(WIDTH, HEIGHT, F_X, F_Y,  fields);
-    if( start.getProc()==3) {
-        engine second(WIDTH, HEIGHT, F_X, F_Y,  fields);
-    }
+    
 
     return 0;
 }

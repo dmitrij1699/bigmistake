@@ -141,10 +141,11 @@ void engine::drawCircle(){
                 newUnit.draw();
                 break;
             case 3:
-                cout<<"3"<<endl;
+                cout<<"Вы выйграли!"<<endl;
+                exit(3);
                 break;
             case 4:
-                cout<<"4"<<endl;
+                cout<<"Вы проиграли!"<<endl;
                 exit(4);
                 break;
         }
@@ -152,8 +153,16 @@ void engine::drawCircle(){
         
         glfwSwapBuffers(window);
         if ( process==3 || process==4 ){
-            
-            break;
+            switch (process){
+                case 3:
+                cout<<"Вы выйграли!"<<endl;
+                exit(3);
+                break;
+            case 4:
+                cout<<"Вы проиграли!"<<endl;
+                exit(4);
+                break;
+            }
         }
     }
 }

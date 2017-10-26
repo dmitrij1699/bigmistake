@@ -13,11 +13,9 @@ unit::unit(int *proc): process(proc) {};
 
 void unit::move(){
     int gag=un.size()-1;
-    cout<< roadV.size() <<"LOL"<< endl;
     for(int i=0;(i<(int) un.size()-gag) ;i++)
     {
         if((int) un[i].pos>=((int) roadV.size()-1)){
-            cout<< "WTF???"<< un[i].pos<<" "<<roadV.size()-1<<endl;
             un[i].pos=-2;
             gag--;
         } else
@@ -34,7 +32,7 @@ void unit::move(){
     }
     
     for(int i=0;i<(int) un.size();i++){
-        cout<<"un["<<i<<"].pos=" <<un[i].pos<<endl;
+        //cout<<"un["<<i<<"].pos=" <<un[i].pos<<endl;
     }
     
 
@@ -164,9 +162,13 @@ void unit::draw(){
         OBJ->drawSingle(defence->at(i*2),defence->at(i*2+1));
     }
     for(unsigned int i=0;i<attack.size();i++){
-        if( un[i].pos>=0  && (int) un[i].pos< (roadV.size()) && un[i].health>0){
+        if( un[i].pos>=0  && (int) un[i].pos< (roadV.size()-1) && un[i].health>0){
+                cout<< roadV.size()-1 << "xxx"<< un[i].pos<< endl;
                 OBJ->drawUnit(getVecX(i),getVecY(i), attack[i]);
                 drawHealthbar(i);
+        }
+        if (un[i].health<=0 ){
+            un[i].pos=-2;
         }
     }
     
